@@ -1,5 +1,3 @@
-yarn run v1.22.19
-$ docker exec judo-blog-db pg_dump -U judo_blog judo_blog
 --
 -- PostgreSQL database dump
 --

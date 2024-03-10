@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "blog:logs": "docker logs -f judo-blog-app",
+        "blog:logs": "docker compose -f docker-compose.dev.yml logs -f",
         "blog:exec": "docker exec judo-blog-app",
         "blog:down": "docker compose -f docker-compose.dev.yml down",
         "blog:dev": "docker compose -f docker-compose.dev.yml up --build -d",
