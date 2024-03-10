@@ -4,7 +4,7 @@ interface BlogSummaryProps {}
 
 export const BlogSummary: React.FC<BlogSummaryProps> = () => {
     return (
-        <div>
+        <div className="flex flex-col gap-2">
             <Title>Judo Blog</Title>
             <Body>
                 안녕하세요. Judo(주도현)의 블로그입니다.
