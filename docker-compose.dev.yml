@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     volumes:
-      - ./frontend:/app
+      - ./app:/app
     working_dir: /app
     container_name: judo-blog-app
     command: yarn dev
@@ -17,9 +17,8 @@ services:
     image: postgres:16
     container_name: judo-blog-db
     environment:
-      MYSQL_DATABASE: judo_blog
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: judo_blog
-      MYSQL_PASSWORD: judo_blog
+      POSTGRES_DB: judo_blog
+      POSTGRES_USER: judo_blog
+      POSTGRES_PASSWORD: judo_blog
     volumes:
       - ./db/initial-data:/docker-entrypoint-initdb.d
