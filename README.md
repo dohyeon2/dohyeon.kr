@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 개발 로드맵
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. 공통
+    1. 프레임워크
+        1. NextJS
+    2. UI 컴포넌트 직접개발
+    3. Auth 직접개발
+        1. stage 1 : 오직 관리자만 접근 가능
+        2. stage 2 : OAuth를 통해 유저 식별 가능
+2. 블로그
+    1. blog.dohyeon.kr
+    2. 소개글 작성
+        1. 사진 등록
+    3. 관리자 로그인
+    4. 게시물 작성
+        1. 태그
+            1. 태그별 게시물 보기
+        2. 제목
+        3. 내용
+            1. 에디터 직접개발
+                1. 글 작성
+        4. 댓글 작성
+            1. 비회원 시 회원가입 모달
+            2. 심리스 회원가입 완료 및 댓글작성
+    5. 게시물 보기
+        1. 게시물 새로운 순을 보기
+        2. 태그 별 게시물 보기
+    6. 로깅
+        1. GA부착
+        2. 로깅 라이브러리 도입
+3. 다크모드
+4. 이슈 관리 도구
+    1. issue.dohyeon.kr
+5. 가계부
+    1. wallet.dohyeon.kr
