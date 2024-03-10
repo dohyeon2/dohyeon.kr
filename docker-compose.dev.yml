@@ -1,25 +1,29 @@
 version: '3.8'
 
 services:
+  db:
+    image: postgres:16
+    container_name: judo-blog-db
+    restart: always
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    environment:
+      POSTGRES_DB: judo_blog
+      POSTGRES_USER: judo_blog
+      POSTGRES_PASSWORD: judo_blog
+    volumes:
+      - ./db/initial-data:/docker-entrypoint-initdb.d
+
   app:
     build:
       context: .
       dockerfile: Dockerfile.dev
     volumes:
-      - ./frontend:/app
+      - ./app:/app
     working_dir: /app
     container_name: judo-blog-app
     command: yarn dev
     ports:
       - 3000:3000
 
-  db:
-    image: postgres:16
-    container_name: judo-blog-db
-    environment:
-      MYSQL_DATABASE: judo_blog
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: judo_blog
-      MYSQL_PASSWORD: judo_blog
-    volumes:
-      - ./db/initial-data:/docker-entrypoint-initdb.d
+ 
