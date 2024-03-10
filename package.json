@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "docker compose -f docker-compose.dev.yml up --build -d"
+        "dev": "docker compose -f docker-compose.dev.yml up --build -d",
+        "prisma": "docker exec judo-blog-app yarn prisma"
     }
 }
