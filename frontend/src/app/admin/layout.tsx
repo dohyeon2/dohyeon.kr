@@ -3,7 +3,7 @@ export default function Layout({
     login,
 }: {
     children: React.ReactNode;
-    login?: React.ReactNode;
+    login: React.ReactNode;
 }) {
     return <div>{children}</div>;
 }

@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+    container_name: judo-blog-app
+    command: yarn run next dev
+  # db:
+  #   image: mysql:8
+  #   container_name: judo-blog-db
+  #   environment:
+  #     MYSQL_DATABASE: judo_blog
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_USER: judo_blog
+  #     MYSQL_PASSWORD: judo_blog
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - db_data:/var/lib/mysql
