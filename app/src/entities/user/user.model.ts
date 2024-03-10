@@ -8,7 +8,7 @@ export class User {
     name: string;
 
     constructor({ id = "", name = "" }: UserConstructorArgs) {
-        this.id = "";
-        this.name = "";
+        this.id = id;
+        this.name = name;
     }
 }
