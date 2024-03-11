@@ -1,11 +1,14 @@
 import { Body, Title } from "@/components/typography";
+import Link from "next/link";
 
 interface BlogSummaryProps {}
 
 export const BlogSummary: React.FC<BlogSummaryProps> = () => {
     return (
         <div className="flex flex-col gap-2">
-            <Title>Judo Blog</Title>
+            <Link href="/">
+                <Title>Judo Blog</Title>
+            </Link>
             <Body>
                 안녕하세요.
                 <br />

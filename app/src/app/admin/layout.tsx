@@ -1,3 +1,4 @@
+import { AdminNav } from "@/components/widget/admin/AdminNav";
 import { getLoggedInUser } from "@/lib/internal/auth";
 
 export default async function Layout({
@@ -11,5 +12,10 @@ export default async function Layout({
     if (!user) {
         return <div>{login}</div>;
     }
-    return <div>{children}</div>;
+    return (
+        <div>
+            <AdminNav />
+            {children}
+        </div>
+    );
 }
