@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import { BlogLayout } from "@/components/ui/BlogLayout";
+import { Provider } from "@/components/provider";
 
 const notoSans = Noto_Sans({ subsets: ["latin"] });
 
@@ -18,7 +19,9 @@ export default function RootLayout({
     return (
         <html lang="ko">
             <body className={notoSans.className}>
-                <BlogLayout>{children}</BlogLayout>
+                <Provider>
+                    <BlogLayout>{children}</BlogLayout>
+                </Provider>
             </body>
         </html>
     );

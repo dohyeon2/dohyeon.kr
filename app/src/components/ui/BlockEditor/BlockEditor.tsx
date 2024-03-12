@@ -3,6 +3,8 @@ import { useEffect, useRef } from "react";
 import styled from "styled-components";
 // @ts-ignore
 import ImageTool from "@editorjs/image";
+// @ts-ignore
+import Header from "@editorjs/header";
 
 interface BlockEditorProps {
     onChange?: (data: any) => void;
@@ -25,14 +27,17 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({
             placeholder: "내용을 입력하세요.",
             onChange: (api) => {
                 api.saver.save().then((outputData) => {
-                    console.log("Article data: ", outputData);
                     onChange(outputData);
                 });
             },
-
             tools: {
                 image: {
                     class: ImageTool,
+                    inlineToolbar: true,
+                },
+                header: {
+                    class: Header,
+                    inlineToolbar: true,
                 },
             },
         });
