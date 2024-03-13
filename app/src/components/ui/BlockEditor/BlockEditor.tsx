@@ -27,7 +27,11 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({
             placeholder: "내용을 입력하세요.",
             onChange: (api) => {
                 api.saver.save().then((outputData) => {
-                    onChange(outputData);
+                    if (outputData.blocks.length === 0) {
+                        onChange(null);
+                    } else {
+                        onChange(outputData);
+                    }
                 });
             },
             tools: {
