@@ -10,7 +10,7 @@ interface PostListProps {}
 export const PostList: React.FC<PostListProps> = () => {
     const { posts = [] } = usePosts();
     return (
-        <div className="flex flex-col gap-5 p-4">
+        <div className="flex flex-col gap-5">
             {posts.map((post: Post) => (
                 <Link key={post.id} href={`/post/${post.id}`}>
                     <PostListItem

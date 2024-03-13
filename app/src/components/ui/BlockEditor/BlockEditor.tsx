@@ -1,10 +1,10 @@
 import EditorJS from "@editorjs/editorjs";
 import { useEffect, useRef } from "react";
-import styled from "styled-components";
 // @ts-ignore
 import ImageTool from "@editorjs/image";
 // @ts-ignore
 import Header from "@editorjs/header";
+import { EditorStyle } from "./style/EditorStyle";
 
 interface BlockEditorProps {
     onChange?: (data: any) => void;
@@ -57,7 +57,5 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({
         };
     }, [onChange]);
 
-    return <StyledEditorHolder ref={editorRef} />;
+    return <EditorStyle ref={editorRef} />;
 };
-
-const StyledEditorHolder = styled.div``;

@@ -1,6 +1,7 @@
 "use client";
 
 import { BlockEditor } from "@/components/ui/BlockEditor";
+import { TitleStyle } from "@/components/ui/BlockEditor/style/TitleStyle";
 import { Button } from "@/components/ui/Button/Button";
 import { Input } from "@/components/ui/Form";
 import { useForm } from "@/hooks/form/useForm";
@@ -8,6 +9,7 @@ import { axiosInstance } from "@/lib/external/axios";
 import { Post } from "@/lib/internal/post/post.model";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import styled from "styled-components";
 
 interface EditorProps {
     onSubmit?: (data: any) => void;
@@ -43,7 +45,7 @@ export const Editor: React.FC<EditorProps> = ({ onSubmit }) => {
 
     return (
         <div className="max-w-[650px] mx-auto p-5">
-            <Input
+            <StyledTitleInput
                 className="mx-auto block border-0"
                 label="제목"
                 placeholder="제목을 입력하세요."
@@ -68,3 +70,7 @@ export const Editor: React.FC<EditorProps> = ({ onSubmit }) => {
         </div>
     );
 };
+
+const StyledTitleInput = styled(Input)`
+    ${TitleStyle};
+`;

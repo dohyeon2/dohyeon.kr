@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { PropsWithChildren } from "react";
+import StyledComponentsRegistry from "./StyledComponentsRegistry";
 
 interface ProviderProps {}
 
@@ -12,9 +13,11 @@ export const Provider: React.FC<PropsWithChildren<ProviderProps>> = ({
 }) => {
     return (
         <>
-            <QueryClientProvider client={queryClent}>
-                {children}
-            </QueryClientProvider>
+            <StyledComponentsRegistry>
+                <QueryClientProvider client={queryClent}>
+                    {children}
+                </QueryClientProvider>
+            </StyledComponentsRegistry>
         </>
     );
 };
