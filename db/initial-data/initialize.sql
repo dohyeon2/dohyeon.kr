@@ -38,6 +38,23 @@ CREATE TABLE public."Auth" (
 ALTER TABLE public."Auth" OWNER TO judo_blog;
 
 --
+-- Name: Post; Type: TABLE; Schema: public; Owner: judo_blog
+--
+
+CREATE TABLE public."Post" (
+    id text NOT NULL,
+    title text NOT NULL,
+    content text NOT NULL,
+    "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "updatedAt" timestamp(3) without time zone NOT NULL,
+    "deletedAt" timestamp(3) without time zone,
+    "userId" text NOT NULL
+);
+
+
+ALTER TABLE public."Post" OWNER TO judo_blog;
+
+--
 -- Name: User; Type: TABLE; Schema: public; Owner: judo_blog
 --
 
@@ -80,6 +97,15 @@ c1404d76-5d2d-401e-9985-c26187bac94c	syate	$2a$12$8WCIMSSDielAX8gvysuK7uPWEM./aT
 
 
 --
+-- Data for Name: Post; Type: TABLE DATA; Schema: public; Owner: judo_blog
+--
+
+COPY public."Post" (id, title, content, "createdAt", "updatedAt", "deletedAt", "userId") FROM stdin;
+5722544f-d23d-41a8-a445-5a9beded602c	테스트 글입니다.	{"time":1710351775593,"blocks":[{"id":"Iyk4cKIVWX","type":"paragraph","data":{"text":"안녕하세요. 테스트용 글 입니다."}}],"version":"2.29.0"}	2024-03-13 17:42:55.779	2024-03-13 17:42:55.779	\N	7831bf19-2492-47df-a94a-ef909a73acc1
+\.
+
+
+--
 -- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: judo_blog
 --
 
@@ -94,6 +120,7 @@ COPY public."User" (id, name, "createdAt", "updatedAt", "deletedAt") FROM stdin;
 
 COPY public._prisma_migrations (id, checksum, finished_at, migration_name, logs, rolled_back_at, started_at, applied_steps_count) FROM stdin;
 cf22b412-363a-4297-9f0e-5706f4924181	bf74a809c064856caf19d5f8e9fa5d18b16a3bae6ca4d3e9951441c2ab910394	2024-03-10 15:51:43.136523+00	20240310155143_auth	\N	\N	2024-03-10 15:51:43.129025+00	1
+31ac0532-f061-470b-bbcb-7868865697fd	693b40e1ef7d6f83a78de1a0083df1be5b971468d01b411d11ecf01919c1ef42	2024-03-13 17:42:34.296629+00	20240312121811_post	\N	\N	2024-03-13 17:42:34.29139+00	1
 \.
 
 
@@ -103,6 +130,14 @@ cf22b412-363a-4297-9f0e-5706f4924181	bf74a809c064856caf19d5f8e9fa5d18b16a3bae6ca
 
 ALTER TABLE ONLY public."Auth"
     ADD CONSTRAINT "Auth_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Post Post_pkey; Type: CONSTRAINT; Schema: public; Owner: judo_blog
+--
+
+ALTER TABLE ONLY public."Post"
+    ADD CONSTRAINT "Post_pkey" PRIMARY KEY (id);
 
 
 --
@@ -137,7 +172,15 @@ ALTER TABLE ONLY public."Auth"
 
 
 --
+-- Name: Post Post_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: judo_blog
+--
+
+ALTER TABLE ONLY public."Post"
+    ADD CONSTRAINT "Post_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."User"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-Done in 0.18s.
+Done in 0.20s.

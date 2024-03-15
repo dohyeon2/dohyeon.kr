@@ -9,6 +9,7 @@ interface InputProps {
     onChange?: HTMLProps<HTMLInputElement>["onChange"];
     type?: HTMLProps<HTMLInputElement>["type"];
     className?: HTMLProps<HTMLInputElement>["className"];
+    placeholder?: HTMLProps<HTMLInputElement>["placeholder"];
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -19,6 +20,7 @@ export const Input: React.FC<InputProps> = ({
     onChange,
     className,
     type = "text",
+    placeholder,
 }) => {
     return (
         <label {...labelProps}>
@@ -32,6 +34,7 @@ export const Input: React.FC<InputProps> = ({
                 value={value}
                 type={type}
                 onChange={onChange}
+                placeholder={placeholder}
             />
         </label>
     );

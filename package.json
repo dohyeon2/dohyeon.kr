@@ -7,7 +7,12 @@
         "blog:exec": "docker exec judo-blog-app",
         "blog:down": "docker compose -f docker-compose.dev.yml down",
         "blog:dev": "docker compose -f docker-compose.dev.yml up --build -d",
-        "blog:exec:db": "docker exec judo-blog-db",
+        "blog:exec:db": "docker exec -it judo-blog-db",
         "blog:exec:prisma": "docker exec judo-blog-app yarn prisma"
+    },
+    "dependencies": {
+        "@stylexjs/nextjs-plugin": "^0.5.1",
+        "@stylexjs/stylex": "^0.5.1",
+        "@wordpress/block-editor": "^12.21.0"
     }
 }

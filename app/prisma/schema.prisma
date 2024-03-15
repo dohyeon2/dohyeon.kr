@@ -20,12 +20,24 @@ model User {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
   Auth      Auth[]
+  Post      Post[]
 }
 
 model Auth {
   id        String    @id @default(uuid())
   username  String    @unique
   password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model Post {
+  id        String    @id @default(uuid())
+  title     String
+  content   String      
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
