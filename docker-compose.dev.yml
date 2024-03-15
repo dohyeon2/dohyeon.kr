@@ -15,6 +15,7 @@ services:
       - ./db/initial-data:/docker-entrypoint-initdb.d
 
   app:
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -25,5 +26,3 @@ services:
     command: yarn dev
     ports:
       - 3000:3000
-
- 
