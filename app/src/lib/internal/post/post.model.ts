@@ -1,11 +1,9 @@
-import { isJson } from "../util/isJson";
-
-type ContentArg = Record<string, any> | string | Object;
+import { PostContent } from "./content/PostContent.interface";
 
 interface PostConstructorArgs {
     id?: string;
     title?: string;
-    content?: ContentArg;
+    content?: PostContent;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -13,7 +11,7 @@ interface PostConstructorArgs {
 export class Post {
     id?: string;
     title: string;
-    content: Record<string, any>;
+    content: PostContent;
     createdAt?: Date;
     updatedAt?: Date;
 
@@ -29,20 +27,8 @@ export class Post {
 
         this.id = id;
         this.title = title ?? "";
-        this.content = this.parseContent(content);
+        this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    private parseContent(content: ContentArg) {
-        if (typeof content === "string") {
-            if (isJson(content)) {
-                return JSON.parse(content);
-            } else {
-                throw new Error("content is not a valid json");
-            }
-        } else {
-            return content;
-        }
     }
 }
