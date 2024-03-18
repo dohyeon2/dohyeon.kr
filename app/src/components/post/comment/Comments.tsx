@@ -1,16 +1,17 @@
+import { useComment } from "@/hooks/comment/useComment";
 import { CommentInput } from "./CommentInput";
-import { CommentItem } from "./CommentItem";
 import { CommentList } from "./CommentList";
 
-interface CommentsProps {}
+interface CommentsProps {
+    postId: string;
+}
 
-export const Comments: React.FC<CommentsProps> = () => {
+export const Comments: React.FC<CommentsProps> = ({ postId }) => {
+    const { comments = [] } = useComment({ postId });
     return (
         <div>
-            <CommentInput />
-            <CommentList>
-                <CommentItem />
-            </CommentList>
+            <CommentInput postId={postId} />
+            <CommentList comments={comments} />
         </div>
     );
 };

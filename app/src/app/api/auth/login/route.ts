@@ -1,5 +1,5 @@
 import { AUTH_CONSTS } from "@/consts/auth.consts";
-import { User } from "@/entities/user/user.model";
+import { UserImpl } from "@/lib/internal/user/user.model";
 import { prisma } from "@/lib/external/prisma";
 import { generateAccessToken } from "@/lib/internal/token";
 import { compareSync } from "bcryptjs";
@@ -50,7 +50,7 @@ export const POST = async (req: NextRequest) => {
         );
     }
 
-    const accessToken = generateAccessToken(new User(user));
+    const accessToken = generateAccessToken(new UserImpl(user));
 
     const successFulLoginResponse = NextResponse.json({
         message: "Login successful",

@@ -1,1 +1,1 @@
-export { axiosInstance } from "./axiosInstance";
+export { api } from "./axiosInstance";
