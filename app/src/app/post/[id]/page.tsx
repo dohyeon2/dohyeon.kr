@@ -1,5 +1,5 @@
 import { PostLayout } from "@/components/ui/PostLayout/PostLayout";
-import { PostView } from "@/components/view/post/PostView";
+import { PostView } from "@/components/post/view/PostView";
 import { Suspense } from "react";
 
 export default function Page({ params: { id } }: { params: { id: string } }) {

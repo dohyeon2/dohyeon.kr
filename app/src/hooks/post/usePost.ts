@@ -1,4 +1,5 @@
 import { axiosInstance } from "@/lib/external/axios";
+import { EditorJsContent } from "@/lib/internal/post/content/EditorJsContent.impl";
 import { POST_CONST } from "@/lib/internal/post/post.const";
 import { Post } from "@/lib/internal/post/post.model";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -9,7 +10,10 @@ export const usePost = ({ id }: { id: string }) => {
         queryFn: async () => {
             const { data } = await axiosInstance.get(`/api/post/${id}`);
 
-            return new Post(data.result);
+            return new Post({
+                ...data.result,
+                content: new EditorJsContent(JSON.parse(data.result.content)),
+            });
         },
     });
 

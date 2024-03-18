@@ -1,9 +1,10 @@
 import { dayjsInstance } from "@/lib/external/dayjs";
 import { excerptFromContent } from "@/lib/external/editor.js/excerptFromContent";
+import { PostContent } from "@/lib/internal/post/content/PostContent.interface";
 
 interface PostListItemProps {
     title: string;
-    content: Record<string, any>;
+    content: PostContent;
     updatedAt?: Date;
 }
 
@@ -20,7 +21,9 @@ export const PostListItem: React.FC<PostListItemProps> = ({
                     {dayjsInstance(updatedAt).format("YYYY.MM.DD HH:mm")}
                 </span>
             </div>
-            <p className="line-clamp-2">{excerptFromContent(content)}</p>
+            <p className="line-clamp-2">
+                {excerptFromContent(content.content)}
+            </p>
         </div>
     );
 };

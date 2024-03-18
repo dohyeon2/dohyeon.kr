@@ -1,4 +1,6 @@
-export const excerptFromContent = (content: unknown) => {
+import { PostContent } from "@/lib/internal/post/content/PostContent.interface";
+
+export const excerptFromContent = (content: PostContent["content"]) => {
     if (!content) return "";
     if (typeof content !== "object") return "";
     if (!("blocks" in content)) return "";
