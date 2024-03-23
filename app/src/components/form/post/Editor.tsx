@@ -5,8 +5,7 @@ import { TitleStyle } from "@/components/ui/BlockEditor/style/TitleStyle";
 import { Button } from "@/components/ui/Button/Button";
 import { Input } from "@/components/ui/Form";
 import { useForm } from "@/hooks/form/useForm";
-import { axiosInstance } from "@/lib/external/axios";
-import { Post } from "@/lib/internal/post/post.model";
+import { api } from "@/lib/external/axios";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import styled from "styled-components";
@@ -32,14 +31,15 @@ export const Editor: React.FC<EditorProps> = ({ onSubmit }) => {
             title: string;
             content?: EditorJS.OutputData;
         }) => {
-            const post = new Post({
+            const { data } = await api.post("/api/post", {
                 title,
                 content,
             });
 
-            const { data } = await axiosInstance.post("/api/post", post);
-
             return data;
+        },
+        onMutate(variables) {
+            onSubmit?.(variables);
         },
     });
 

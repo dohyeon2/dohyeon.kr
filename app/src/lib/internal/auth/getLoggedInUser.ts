@@ -1,10 +1,17 @@
-import "server-only";
-import { getTokenFromCookie } from "./getTokenFromCookie";
-import { verifyToken } from "../token";
 import { prisma } from "@/lib/external/prisma";
+import { cookies } from "next/headers";
+import "server-only";
+import { verifyToken } from "../token";
+import { getTokenFromCookie } from "./getTokenFromCookie";
 
-export const getLoggedInUser = async () => {
-    const token = getTokenFromCookie()?.value;
+export const getLoggedInUser = async ({
+    cookieStore = cookies(),
+}: {
+    cookieStore?: any;
+} = {}) => {
+    const token = getTokenFromCookie({
+        cookieStore,
+    })?.value;
 
     if (!token) {
         return null;
