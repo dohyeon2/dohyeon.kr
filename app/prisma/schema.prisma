@@ -57,7 +57,11 @@ model Comment {
   userId      String?
   post        Post          @relation(fields: [postId], references: [id])
   postId      String
+  parentId    String?
+  parent      Comment?      @relation("CommentChildren", fields: [parentId], references: [id])
+  children    Comment[]     @relation("CommentChildren")
   CommentMeta CommentMeta[]
+  commentId   String?
 }
 
 model CommentMeta {

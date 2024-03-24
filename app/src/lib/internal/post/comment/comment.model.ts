@@ -1,4 +1,4 @@
-import { User } from "../user/user.interface";
+import { User } from "../../user/user.interface";
 import { AuthorImpl } from "./author.model";
 import { Comment as CommentInterface } from "./comment.interface";
 
