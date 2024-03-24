@@ -12,14 +12,29 @@ export const GET = async (
         };
     }
 ) => {
-    const comments = await prisma.comment.findMany({
-        where: {
-            postId: id,
-        },
-        include: {
-            user: true,
-        },
-    });
+    const comments = await prisma.comment
+        .findMany({
+            where: {
+                postId: id,
+            },
+            include: {
+                user: true,
+                CommentMeta: true,
+            },
+        })
+        .then((comments) =>
+            comments.map((comment) => ({
+                id: comment.id,
+                postId: comment.postId,
+                createdAt: comment.createdAt,
+                content: comment.content,
+                author: comment.user
+                    ? comment.user.name
+                    : comment.CommentMeta.find((x) => x.key === "author")
+                          ?.value ?? "익명",
+                updatedAt: comment.updatedAt,
+            }))
+        );
 
     return NextResponse.json(comments);
 };
@@ -27,16 +42,32 @@ export const GET = async (
 export const POST = async (req: NextRequest) => {
     const body = await req.json();
     const user = await getLoggedInUser();
-    if (!user) {
-        return NextResponse.json(new Error("로그인이 필요합니다."), {
-            status: 401,
-        });
-    }
+
+    const isLoggedIn = !!user;
+
+    const DO_NOTHING = undefined;
+
     const comment = await prisma.comment.create({
         data: {
             userId: user?.id,
             postId: body.postId,
             content: body.content,
+            CommentMeta: isLoggedIn
+                ? DO_NOTHING
+                : {
+                      createMany: {
+                          data: [
+                              {
+                                  key: "author",
+                                  value: body.author,
+                              },
+                              {
+                                  key: "password",
+                                  value: body.password,
+                              },
+                          ],
+                      },
+                  },
         },
     });
 

@@ -16,5 +16,7 @@ export const useMe = () => {
         },
     });
 
-    return { me };
+    const isLoggedIn = !!me;
+
+    return { me: me, isLoggedIn };
 };

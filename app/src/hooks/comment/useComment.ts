@@ -1,6 +1,7 @@
 import { api } from "@/lib/external/axios";
 import { Comment } from "@/lib/internal/comment/comment.model";
 import { COMMENT_CONST } from "@/lib/internal/post/comment/comment.const";
+import { UserImpl } from "@/lib/internal/user/user.model";
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 
 export const useComment = ({ postId }: { postId: string }) => {
@@ -12,7 +13,9 @@ export const useComment = ({ postId }: { postId: string }) => {
                 (comment: any) =>
                     new Comment({
                         ...comment,
-                        author: comment.user,
+                        author: new UserImpl({
+                            name: comment.author,
+                        }),
                     })
             );
         },
