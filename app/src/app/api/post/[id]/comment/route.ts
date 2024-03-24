@@ -21,6 +21,9 @@ export const GET = async (
                 user: true,
                 CommentMeta: true,
             },
+            orderBy: {
+                createdAt: "desc",
+            },
         })
         .then((comments) =>
             comments.map((comment) => ({
