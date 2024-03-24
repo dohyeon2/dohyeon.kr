@@ -1,8 +1,9 @@
 import { Comment } from "../../comment/comment.interface";
+import { User } from "../../user/user.interface";
 
 export class CommentImpl implements Comment {
     id: string;
-    author?: string;
+    author: User;
     content: string;
     createdAt: Date;
     updatedAt?: Date;
