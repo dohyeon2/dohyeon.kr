@@ -60,8 +60,6 @@ export const CommentItem: React.FC<CommentItemProps> = ({
                                         답글달기
                                     </button>
                                 )}
-                                <div>수정</div>
-                                <div>삭제</div>
                             </div>
                         </Content>
                         {comments.length > 0 && (

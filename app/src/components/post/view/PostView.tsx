@@ -2,9 +2,8 @@
 
 import { EditJsRenderer } from "@/components/widget/Content";
 import { usePost } from "@/hooks/post/usePost";
-import { Title } from "../style/Title";
 import { Comments } from "../comment";
-import { useComment } from "@/hooks/comment/useComment";
+import { Title } from "../style/Title";
 
 interface PostViewProps {
     id: string;
