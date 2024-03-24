@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/Button/Button";
 import { Input } from "@/components/ui/Form";
 import { Switch } from "@/components/util/switch";
 import { Case } from "@/components/util/switch/Case";
@@ -96,11 +97,13 @@ export const CommentInput: React.FC<CommentInputProps> = ({ postId }) => {
             <textarea
                 name="content"
                 onChange={handleChange}
-                className="bg-transparent border-b border-gray-300 w-full h-20 p-2"
+                className="bg-transparent border border-gray-300 w-full h-20 p-2"
                 value={content.content}
                 placeholder="보는 이를 배려하며 댓글을 입력해주세요."
             />
-            <button onClick={submit}>입력하기</button>
+            <Button className="w-full" onClick={submit}>
+                입력하기
+            </Button>
         </div>
     );
 };

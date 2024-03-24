@@ -1,5 +1,4 @@
 import { ReactElement } from "react";
-import { Case } from "./Case";
 
 interface SwitchProps {
     children: ReactElement<"Case"> | ReactElement<"Case">[];

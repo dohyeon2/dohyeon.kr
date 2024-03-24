@@ -1,16 +1,13 @@
-import { Comment } from "@/lib/internal/comment/comment.interface";
-import { CommentItem } from "./CommentItem";
+import { ReactElement } from "react";
 
 interface CommentListProps {
-    comments: Comment[];
+    children?: ReactElement<"CommentItem"> | ReactElement<"CommentItem">[];
 }
 
-export const CommentList: React.FC<CommentListProps> = ({ comments = [] }) => {
+export const CommentList: React.FC<CommentListProps> = ({ children }) => {
     return (
-        <div>
-            {comments.map((comment) => {
-                return <CommentItem key={comment.id} data={comment} />;
-            })}
+        <div className="flex flex-col [&_>_*]:border-b [&_>_*]:py-2 border-t">
+            {children}
         </div>
     );
 };
