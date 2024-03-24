@@ -13,7 +13,7 @@ interface CollapseProps {
 }
 
 export const Collapse: React.FC<CollapseProps> = ({ children }) => {
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
 
     const Content = ({ children }: PropsWithChildren) => {
         return (

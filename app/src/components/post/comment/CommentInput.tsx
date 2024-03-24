@@ -1,17 +1,20 @@
 import { Button } from "@/components/ui/Button/Button";
 import { Input } from "@/components/ui/Form";
-import { Switch } from "@/components/util/switch";
-import { Case } from "@/components/util/switch/Case";
+import { If, Switch } from "@/components/util/condition";
+import { Case } from "@/components/util/condition/Case";
 import { useCommentMutation } from "@/hooks/comment/useCommentMutation";
 import { useMe } from "@/hooks/user/useMe";
+import { Comment } from "@/lib/internal/post/comment/comment.model";
 import { generateRandomUserName } from "@/lib/internal/user/name/generateRandomUserName";
 import { getNameFromStorage } from "@/lib/internal/user/name/getNameFromStorage";
 import { setNameIntoStorage } from "@/lib/internal/user/name/setNameIntoStorage";
 import { produce } from "immer";
-import { useState } from "react";
+import { ForwardRefRenderFunction, forwardRef, useState } from "react";
 
 interface CommentInputProps {
     postId: string;
+    replyFor?: Comment | null;
+    onClearReplyFor?: () => void;
 }
 
 interface FormData {
@@ -19,7 +22,10 @@ interface FormData {
     author?: string;
     password?: string;
 }
-export const CommentInput: React.FC<CommentInputProps> = ({ postId }) => {
+const _CommentInput: ForwardRefRenderFunction<
+    HTMLDivElement,
+    CommentInputProps
+> = ({ postId, replyFor, onClearReplyFor }, ref) => {
     const { me: author, isLoggedIn } = useMe();
     const [content, setContent] = useState<FormData>({
         author: !isLoggedIn
@@ -58,6 +64,7 @@ export const CommentInput: React.FC<CommentInputProps> = ({ postId }) => {
         }
         await createComment({
             postId,
+            parentId: replyFor?.id,
             ...content,
         });
         setNameIntoStorage(content.author);
@@ -65,7 +72,7 @@ export const CommentInput: React.FC<CommentInputProps> = ({ postId }) => {
     };
 
     return (
-        <div>
+        <div ref={ref}>
             <Switch>
                 <Case condition={isLoggedIn}>
                     <div className="font-bold">{author?.name}</div>
@@ -94,6 +101,21 @@ export const CommentInput: React.FC<CommentInputProps> = ({ postId }) => {
                     </div>
                 </Case>
             </Switch>
+            <If condition={!!replyFor}>
+                <div className="flex ">
+                    <div className="text-sm text-gray-500 flex-1">
+                        <div>
+                            {replyFor?.author.name}님에게 답글을 남깁니다.
+                        </div>
+                        <div className="line-clamp-2">
+                            원문: {replyFor?.content}
+                        </div>
+                    </div>
+                    <div className="flex-none">
+                        <Button onClick={onClearReplyFor}>답글 취소</Button>
+                    </div>
+                </div>
+            </If>
             <textarea
                 name="content"
                 onChange={handleChange}
@@ -107,3 +129,5 @@ export const CommentInput: React.FC<CommentInputProps> = ({ postId }) => {
         </div>
     );
 };
+
+export const CommentInput = forwardRef(_CommentInput);

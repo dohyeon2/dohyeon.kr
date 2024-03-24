@@ -1,3 +1,4 @@
+import { getCommentsOfPost } from "@/app/api/shared/comment/getComments";
 import { prisma } from "@/lib/external/prisma";
 import { getLoggedInUser } from "@/lib/internal/auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -12,32 +13,7 @@ export const GET = async (
         };
     }
 ) => {
-    const comments = await prisma.comment
-        .findMany({
-            where: {
-                postId: id,
-            },
-            include: {
-                user: true,
-                CommentMeta: true,
-            },
-            orderBy: {
-                createdAt: "desc",
-            },
-        })
-        .then((comments) =>
-            comments.map((comment) => ({
-                id: comment.id,
-                postId: comment.postId,
-                createdAt: comment.createdAt,
-                content: comment.content,
-                author: comment.user
-                    ? comment.user.name
-                    : comment.CommentMeta.find((x) => x.key === "author")
-                          ?.value ?? "익명",
-                updatedAt: comment.updatedAt,
-            }))
-        );
+    const comments = await getCommentsOfPost(id);
 
     return NextResponse.json(comments);
 };
@@ -55,6 +31,7 @@ export const POST = async (req: NextRequest) => {
             userId: user?.id,
             postId: body.postId,
             content: body.content,
+            parentId: body.parentId,
             CommentMeta: isLoggedIn
                 ? DO_NOTHING
                 : {

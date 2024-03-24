@@ -1,5 +1,5 @@
-import { User } from "../user/user.interface";
-import { UserImpl } from "../user/user.model";
+import { User } from "../../user/user.interface";
+import { UserImpl } from "../../user/user.model";
 
 interface AuthorContructorArgs {
     id?: string;
