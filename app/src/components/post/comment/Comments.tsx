@@ -1,6 +1,8 @@
 import { useComment } from "@/hooks/comment/useComment";
 import { CommentInput } from "./CommentInput";
 import { CommentList } from "./CommentList";
+import { Comment } from "@/lib/internal/comment/comment.model";
+import { CommentItem } from "./CommentItem";
 
 interface CommentsProps {
     postId: string;
@@ -9,9 +11,13 @@ interface CommentsProps {
 export const Comments: React.FC<CommentsProps> = ({ postId }) => {
     const { comments = [] } = useComment({ postId });
     return (
-        <div>
+        <div className="flex flex-col gap-2">
             <CommentInput postId={postId} />
-            <CommentList comments={comments} />
+            <CommentList>
+                {comments.map((comment: Comment) => (
+                    <CommentItem key={comment.id} data={comment} />
+                ))}
+            </CommentList>
         </div>
     );
 };

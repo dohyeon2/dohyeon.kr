@@ -1,5 +1,9 @@
 import dayjs from "dayjs";
+import "dayjs/locale/ko";
+import tz from "dayjs/plugin/timezone";
 
-const dayjsInstance = dayjs;
+const day = dayjs;
+day.locale("ko");
+day.extend(tz);
 
-export { dayjsInstance };
+export { day };
