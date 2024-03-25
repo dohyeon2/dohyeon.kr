@@ -24,10 +24,21 @@ export const useCommentMutation = <T extends Record<string, any>>() => {
     });
 
     const { mutateAsync: updateComment } = useMutation({
-        mutationFn: async (data: { id: Comment["id"] } & T) => {
+        mutationFn: async ({
+            id,
+            content,
+            password,
+        }: { id: Comment["id"]; content: string; password?: string } & T) => {
             const { data: comment } = await api.put(
-                `/api/comment/${data.id}`,
-                data
+                `/api/comment/${id}`,
+                {
+                    content,
+                },
+                {
+                    headers: {
+                        Authorization: "Basic " + btoa(`anonymous:${password}`),
+                    },
+                }
             );
             return new Comment(comment);
         },
@@ -59,5 +70,5 @@ export const useCommentMutation = <T extends Record<string, any>>() => {
         },
     });
 
-    return { createComment, deleteComment };
+    return { createComment, deleteComment, updateComment };
 };
