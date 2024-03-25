@@ -5,6 +5,8 @@ import { day } from "@/lib/external/dayjs";
 import { Comment } from "@/lib/internal/post/comment/comment.interface";
 import classNames from "classnames";
 import { CommentList } from "./CommentList";
+import { useCommentMutation } from "@/hooks/comment/useCommentMutation";
+import { useMe } from "@/hooks/user/useMe";
 
 interface CommentItemProps {
     data: Comment;
@@ -17,9 +19,13 @@ export const CommentItem: React.FC<CommentItemProps> = ({
     isChildren = false,
     onClickReply,
 }) => {
+    const { me } = useMe();
     const { comments = [] } = useCommentChildren({
         commentId: data.id,
     });
+    const { deleteComment } = useCommentMutation();
+    const isAuthor = me?.id === data.author.id;
+    const canDelete = isAuthor || data.isAnonymous;
     return (
         <div
             className={classNames({
@@ -58,6 +64,25 @@ export const CommentItem: React.FC<CommentItemProps> = ({
                                         }}
                                     >
                                         답글달기
+                                    </button>
+                                )}
+                                {canDelete && (
+                                    <button
+                                        onClick={() => {
+                                            let password = undefined;
+                                            if (data.isAnonymous) {
+                                                password =
+                                                    prompt(
+                                                        "비밀번호를 입력해주세요."
+                                                    ) ?? undefined;
+                                            }
+                                            deleteComment({
+                                                id: data.id,
+                                                password,
+                                            });
+                                        }}
+                                    >
+                                        삭제
                                     </button>
                                 )}
                             </div>

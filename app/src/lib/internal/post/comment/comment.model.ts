@@ -9,6 +9,7 @@ interface CommentConstructorArgs {
     createdAt?: Date;
     postId: string;
     updatedAt?: Date | undefined;
+    isAnonymous?: boolean;
 }
 
 export class Comment implements CommentInterface {
@@ -18,6 +19,7 @@ export class Comment implements CommentInterface {
     createdAt: Date;
     postId: string;
     updatedAt?: Date | undefined;
+    isAnonymous?: boolean;
 
     constructor(data: CommentConstructorArgs) {
         this.id = data.id;
@@ -26,5 +28,6 @@ export class Comment implements CommentInterface {
         this.createdAt = data.createdAt ?? new Date();
         this.postId = data.postId;
         this.updatedAt = data.updatedAt;
+        this.isAnonymous = data.isAnonymous;
     }
 }

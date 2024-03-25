@@ -19,6 +19,7 @@ export const GET = async (
 };
 
 export const POST = async (req: NextRequest) => {
+    // ! it has to be set challenge token in middleware
     const body = await req.json();
     const user = await getLoggedInUser();
 
