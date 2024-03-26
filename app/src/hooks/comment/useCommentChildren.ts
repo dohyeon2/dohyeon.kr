@@ -16,6 +16,7 @@ export const useCommentChildren = ({ commentId }: { commentId: string }) => {
                     new Comment({
                         ...comment,
                         author: new UserImpl({
+                            id: comment.authorId,
                             name: comment.author,
                         }),
                     })

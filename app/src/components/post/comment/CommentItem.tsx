@@ -5,6 +5,11 @@ import { day } from "@/lib/external/dayjs";
 import { Comment } from "@/lib/internal/post/comment/comment.interface";
 import classNames from "classnames";
 import { CommentList } from "./CommentList";
+import { useCommentMutation } from "@/hooks/comment/useCommentMutation";
+import { useMe } from "@/hooks/user/useMe";
+import { useState } from "react";
+import { Switch } from "@/components/util/condition";
+import { Case } from "@/components/util/condition/Case";
 
 interface CommentItemProps {
     data: Comment;
@@ -17,9 +22,15 @@ export const CommentItem: React.FC<CommentItemProps> = ({
     isChildren = false,
     onClickReply,
 }) => {
+    const { me } = useMe();
     const { comments = [] } = useCommentChildren({
         commentId: data.id,
     });
+    const { deleteComment, updateComment } = useCommentMutation();
+    const isAuthor = me?.id === data.author.id;
+    const canControl = isAuthor || (!isAuthor && data.isAnonymous);
+    const [isModifying, setIsModifying] = useState(false);
+    const [modifiedContent, setModifiedContent] = useState(data.content);
     return (
         <div
             className={classNames({
@@ -44,7 +55,58 @@ export const CommentItem: React.FC<CommentItemProps> = ({
                             </CSR>
                         </div>
                         <div className="flex">
-                            <div className="flex-1">{data.content}</div>
+                            <Switch>
+                                <Case condition={!isModifying}>
+                                    <div className="flex-1">{data.content}</div>
+                                </Case>
+                                <Case condition={isModifying}>
+                                    <div className="w-full">
+                                        <textarea
+                                            className="w-full bg-transparent border border-white/30 p-1"
+                                            value={modifiedContent}
+                                            onChange={(e) => {
+                                                setModifiedContent(
+                                                    e.target.value
+                                                );
+                                            }}
+                                        />
+                                        <div className="flex">
+                                            <button
+                                                className="flex-1"
+                                                onClick={() => {
+                                                    setIsModifying(false);
+                                                }}
+                                            >
+                                                취소
+                                            </button>
+                                            <button
+                                                className="flex-1"
+                                                onClick={async () => {
+                                                    try {
+                                                        let password;
+                                                        if (data.isAnonymous) {
+                                                            password =
+                                                                prompt(
+                                                                    "비밀번호를 입력해주세요."
+                                                                ) ?? undefined;
+                                                        }
+                                                        await updateComment({
+                                                            id: data.id,
+                                                            content:
+                                                                modifiedContent,
+                                                            password,
+                                                        });
+                                                    } finally {
+                                                        setIsModifying(false);
+                                                    }
+                                                }}
+                                            >
+                                                저장
+                                            </button>
+                                        </div>
+                                    </div>
+                                </Case>
+                            </Switch>
                             <div className="flex-none opacity-75 text-sm">
                                 <Trigger>메뉴</Trigger>
                             </div>
@@ -58,6 +120,34 @@ export const CommentItem: React.FC<CommentItemProps> = ({
                                         }}
                                     >
                                         답글달기
+                                    </button>
+                                )}
+                                {canControl && (
+                                    <button
+                                        onClick={() => {
+                                            let password = undefined;
+                                            if (data.isAnonymous) {
+                                                password =
+                                                    prompt(
+                                                        "비밀번호를 입력해주세요."
+                                                    ) ?? undefined;
+                                            }
+                                            deleteComment({
+                                                id: data.id,
+                                                password,
+                                            });
+                                        }}
+                                    >
+                                        삭제
+                                    </button>
+                                )}
+                                {canControl && (
+                                    <button
+                                        onClick={() => {
+                                            setIsModifying(true);
+                                        }}
+                                    >
+                                        수정
                                     </button>
                                 )}
                             </div>

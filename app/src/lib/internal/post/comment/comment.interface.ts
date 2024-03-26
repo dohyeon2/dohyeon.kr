@@ -7,4 +7,5 @@ export interface Comment {
     createdAt: Date;
     updatedAt?: Date;
     postId: string;
+    isAnonymous?: boolean;
 }

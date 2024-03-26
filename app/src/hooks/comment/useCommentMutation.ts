@@ -23,5 +23,52 @@ export const useCommentMutation = <T extends Record<string, any>>() => {
         },
     });
 
-    return { createComment };
+    const { mutateAsync: updateComment } = useMutation({
+        mutationFn: async ({
+            id,
+            content,
+            password,
+        }: { id: Comment["id"]; content: string; password?: string } & T) => {
+            const { data: comment } = await api.put(
+                `/api/comment/${id}`,
+                {
+                    content,
+                },
+                {
+                    headers: {
+                        Authorization: "Basic " + btoa(`anonymous:${password}`),
+                    },
+                }
+            );
+            return new Comment(comment);
+        },
+        onSuccess: () => {
+            queryClent.invalidateQueries({
+                queryKey: [COMMENT_CONST.QUERY_KEY.GET_COMMENTS],
+            });
+        },
+    });
+
+    const { mutateAsync: deleteComment } = useMutation({
+        mutationFn: async ({
+            id,
+            password,
+        }: {
+            id: Comment["id"];
+            password?: string;
+        }) => {
+            await api.delete(`/api/comment/${id}`, {
+                headers: {
+                    Authorization: "Basic " + btoa(`anonymous:${password}`),
+                },
+            });
+        },
+        onSuccess: () => {
+            queryClent.invalidateQueries({
+                queryKey: [COMMENT_CONST.QUERY_KEY.GET_COMMENTS],
+            });
+        },
+    });
+
+    return { createComment, deleteComment, updateComment };
 };

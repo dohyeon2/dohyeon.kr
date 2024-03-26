@@ -53,12 +53,12 @@ model Comment {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   deletedAt   DateTime?
-  user        User?         @relation(fields: [userId], references: [id])
+  user        User?         @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId      String?
-  post        Post          @relation(fields: [postId], references: [id])
+  post        Post          @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   postId      String
   parentId    String?
-  parent      Comment?      @relation("CommentChildren", fields: [parentId], references: [id])
+  parent      Comment?      @relation("CommentChildren", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   children    Comment[]     @relation("CommentChildren")
   CommentMeta CommentMeta[]
   commentId   String?
@@ -71,6 +71,6 @@ model CommentMeta {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  comment   Comment   @relation(fields: [commentId], references: [id])
+  comment   Comment   @relation(fields: [commentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   commentId String
 }

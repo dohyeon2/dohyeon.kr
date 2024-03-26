@@ -44,9 +44,11 @@ const mapComment = (
         postId: comment.postId,
         createdAt: comment.createdAt,
         content: comment.content,
+        isAnonymous: !comment.user,
         author: comment.user
             ? comment.user.name
             : comment.CommentMeta.find((x) => x.key === "author")?.value ??
               "익명",
+        authorId: comment.userId,
         updatedAt: comment.updatedAt,
     }));

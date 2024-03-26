@@ -4,6 +4,7 @@ import { EditJsRenderer } from "@/components/widget/Content";
 import { usePost } from "@/hooks/post/usePost";
 import { Comments } from "../comment";
 import { Title } from "../style/Title";
+import { Suspense } from "react";
 
 interface PostViewProps {
     id: string;
