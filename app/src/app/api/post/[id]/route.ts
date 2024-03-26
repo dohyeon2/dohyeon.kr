@@ -19,3 +19,22 @@ export const GET = async (
         result: post,
     });
 };
+
+export const DELETE = async (
+    req: NextRequest,
+    {
+        params: { id },
+    }: {
+        params: { id: string };
+    }
+) => {
+    await prisma.post.delete({
+        where: {
+            id: id,
+        },
+    });
+
+    return NextResponse.json({
+        result: "success",
+    });
+};
