@@ -1,5 +1,11 @@
-import { Editor } from "@/components/form/post";
+import { PostEditor } from "@/components/post/edit/PostEditor";
 
-export default function Page() {
-    return <Editor />;
+export default function Page({
+    searchParams: { id },
+}: {
+    searchParams: {
+        id: string;
+    };
+}) {
+    return <PostEditor id={id} />;
 }
