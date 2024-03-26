@@ -2,10 +2,10 @@ import { api } from "@/lib/external/axios";
 import { COMMENT_CONST } from "@/lib/internal/post/comment/comment.const";
 import { Comment } from "@/lib/internal/post/comment/comment.model";
 import { UserImpl } from "@/lib/internal/user/user.model";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export const useCommentChildren = ({ commentId }: { commentId: string }) => {
-    const { data: comments } = useSuspenseQuery({
+    const { data: comments } = useQuery({
         queryKey: [COMMENT_CONST.QUERY_KEY.GET_COMMENTS, commentId],
         queryFn: async () => {
             const { data } = await api.get(

@@ -72,7 +72,7 @@ const _CommentInput: ForwardRefRenderFunction<
     };
 
     return (
-        <div ref={ref}>
+        <div ref={ref} className="flex flex-col gap-2">
             <Switch>
                 <Case condition={isLoggedIn}>
                     <div className="font-bold">{author?.name}</div>
@@ -102,7 +102,7 @@ const _CommentInput: ForwardRefRenderFunction<
                 </Case>
             </Switch>
             <If condition={!!replyFor}>
-                <div className="flex ">
+                <div className="flex">
                     <div className="text-sm text-gray-500 flex-1">
                         <div>
                             {replyFor?.author.name}님에게 답글을 남깁니다.

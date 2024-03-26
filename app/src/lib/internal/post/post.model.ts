@@ -1,9 +1,7 @@
-import { PostContent } from "./content/PostContent.interface";
-
 interface PostConstructorArgs {
     id?: string;
     title?: string;
-    content?: PostContent;
+    content?: string;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -11,7 +9,7 @@ interface PostConstructorArgs {
 export class Post {
     id?: string;
     title: string;
-    content: PostContent;
+    content: string;
     createdAt?: Date;
     updatedAt?: Date;
 

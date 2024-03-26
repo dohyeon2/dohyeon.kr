@@ -1,14 +1,12 @@
 "use client";
 
-import { BlockEditor } from "@/components/ui/BlockEditor";
-import { TitleStyle } from "@/components/ui/BlockEditor/style/TitleStyle";
 import { Button } from "@/components/ui/Button/Button";
 import { Input } from "@/components/ui/Form";
+import MDEditor from "@/components/ui/MDEditor/MDEditor";
 import { useForm } from "@/hooks/form/useForm";
 import { api } from "@/lib/external/axios";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import styled from "styled-components";
 
 interface EditorProps {
     onSubmit?: (data: any) => void;
@@ -21,7 +19,7 @@ export const Editor: React.FC<EditorProps> = ({ onSubmit }) => {
         },
     });
 
-    const [content, setContent] = useState<EditorJS.OutputData>();
+    const [content, setContent] = useState<string>("");
 
     const { mutateAsync: submit } = useMutation({
         mutationFn: async ({
@@ -29,7 +27,7 @@ export const Editor: React.FC<EditorProps> = ({ onSubmit }) => {
             content,
         }: {
             title: string;
-            content?: EditorJS.OutputData;
+            content?: string;
         }) => {
             const { data } = await api.post("/api/post", {
                 title,
@@ -45,7 +43,7 @@ export const Editor: React.FC<EditorProps> = ({ onSubmit }) => {
 
     return (
         <div className="max-w-[650px] mx-auto p-5">
-            <StyledTitleInput
+            <Input
                 className="mx-auto block border-0"
                 label="제목"
                 placeholder="제목을 입력하세요."
@@ -54,7 +52,12 @@ export const Editor: React.FC<EditorProps> = ({ onSubmit }) => {
                 }}
                 {...getInputProps("title")}
             />
-            <BlockEditor onChange={setContent} />
+            <MDEditor
+                value={content}
+                onChange={(value = "") => {
+                    setContent(value);
+                }}
+            />
             <Button
                 className="w-full"
                 onClick={async () => {
@@ -70,7 +73,3 @@ export const Editor: React.FC<EditorProps> = ({ onSubmit }) => {
         </div>
     );
 };
-
-const StyledTitleInput = styled(Input)`
-    ${TitleStyle};
-`;
