@@ -20,8 +20,8 @@ export class Post {
         createdAt,
         updatedAt,
     }: PostConstructorArgs) {
-        if (!title) throw new Error("title is required");
-        if (!content) throw new Error("content is required");
+        if (typeof title !== "string") throw new Error("title is required");
+        if (typeof content !== "string") throw new Error("content is required");
 
         this.id = id;
         this.title = title ?? "";

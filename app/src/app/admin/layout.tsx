@@ -13,9 +13,9 @@ export default async function Layout({
         return <div>{login}</div>;
     }
     return (
-        <div>
+        <div className="h-full flex flex-col">
             <AdminNav />
-            {children}
+            <div className="flex-1">{children}</div>
         </div>
     );
 }

@@ -1,13 +1,12 @@
 "use client";
 
-import { EditJsRenderer } from "@/components/widget/Content";
 import { usePost } from "@/hooks/post/usePost";
+import { usePostMutation } from "@/hooks/post/usePostMutation";
+import { day } from "@/lib/external/dayjs";
+import MDEditor from "@uiw/react-md-editor";
+import { useRouter } from "next/navigation";
 import { Comments } from "../comment";
 import { Title } from "../style/Title";
-import MDEditor from "@uiw/react-md-editor";
-import { usePostMutation } from "@/hooks/post/usePostMutation";
-import { useRouter } from "next/navigation";
-import { day } from "@/lib/external/dayjs";
 
 interface PostViewProps {
     id: string;
