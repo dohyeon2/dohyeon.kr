@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    container_name: judo-blog-db
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_DB: judo_blog
+      POSTGRES_USER: judo_blog
+      POSTGRES_PASSWORD: judo_blog
+    volumes:
+      - ./db/initial-data:/docker-entrypoint-initdb.d
+    networks:
+      - nginx
+
+  app:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    working_dir: /app
+    container_name: judo-blog-app
+    command: sh -c "yarn prisma migrate deploy && yarn start"
+    networks:
+      - nginx
+
+networks:
+  nginx:
+    external: true
