@@ -27,7 +27,9 @@ export const Editor: React.FC<EditorProps> = ({
     });
 
     const [content, setContent] = useState<string>(initialData.content);
-    const [privatePost, setPrivatePost] = useState<boolean>(false);
+    const [privatePost, setPrivatePost] = useState<boolean>(
+        initialData.isPrivate ?? false
+    );
 
     return (
         <div className="p-5 flex flex-col gap-4 h-full">

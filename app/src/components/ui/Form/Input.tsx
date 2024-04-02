@@ -5,7 +5,7 @@ interface InputProps {
     label?: HTMLProps<HTMLLabelElement>["children"];
     labelProps?: Omit<HTMLProps<HTMLLabelElement>, "children">;
     name: HTMLProps<HTMLInputElement>["name"];
-    value: HTMLProps<HTMLInputElement>["value"];
+    value: HTMLProps<HTMLInputElement>["value"] | null | undefined | boolean;
     onChange?: HTMLProps<HTMLInputElement>["onChange"];
     type?: HTMLProps<HTMLInputElement>["type"];
     className?: HTMLProps<HTMLInputElement>["className"];
@@ -43,7 +43,7 @@ export const Input: React.FC<InputProps> = ({
             <input
                 className={classNames("border bg-transparent", className)}
                 name={name}
-                value={value}
+                value={value ? String(value) : ""}
                 type={isVisibleInPassword ? "text" : type}
                 onChange={onChange}
                 placeholder={placeholder}
