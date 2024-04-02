@@ -5,9 +5,13 @@ import { Post } from "@/lib/internal/post/post.model";
 import { useMutation } from "@tanstack/react-query";
 
 export const usePostMutation = ({
-    onMutate,
+    onSuccess,
 }: {
-    onMutate?: (post?: Post) => Promise<void>;
+    onSuccess?: ({
+        result: { id },
+    }: {
+        result: { id: string };
+    }) => Promise<void>;
 } = {}) => {
     const invalidateQueries = async () => {
         for (const key of [
@@ -25,7 +29,7 @@ export const usePostMutation = ({
             await api.delete(`/api/post/${id}`);
             return undefined;
         },
-        onMutate: invalidateQueries,
+        onSuccess: invalidateQueries,
     });
 
     const { mutateAsync: createPost } = useMutation({
@@ -38,9 +42,9 @@ export const usePostMutation = ({
 
             return data;
         },
-        onMutate: async (post: Post) => {
+        onSuccess: async (res: any) => {
             await invalidateQueries();
-            await onMutate?.(post);
+            await onSuccess?.(res);
         },
     });
 
@@ -54,9 +58,9 @@ export const usePostMutation = ({
 
             return data;
         },
-        onMutate: async (post: Post) => {
+        onSuccess: async (res: any) => {
             await invalidateQueries();
-            await onMutate?.(post);
+            await onSuccess?.(res);
         },
     });
 

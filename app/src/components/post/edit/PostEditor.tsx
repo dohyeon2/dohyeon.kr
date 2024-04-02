@@ -12,18 +12,15 @@ interface PostEditorProps {
 
 export const PostEditor: React.FC<PostEditorProps> = ({ id }) => {
     const { post = undefined } = usePost({ id });
-    const isModifying = !!post;
+    const isModifying = !!post?.id;
     const { createPost, updatePost } = usePostMutation({
-        onMutate: async (post?: Post) => {
-            if (!post) {
-                return;
-            }
+        onSuccess: async ({ result: { id } }: { result: { id: string } }) => {
             if (isModifying) {
                 alert("수정되었습니다.");
             } else {
                 alert("작성되었습니다.");
             }
-            router.push(`/post/${post!.id}`);
+            router.push(`/post/${id}`);
         },
     });
 
