@@ -2,13 +2,15 @@ import { prisma } from "@/lib/external/prisma";
 import { getLoggedInUser } from "@/lib/internal/auth";
 import { Post } from "@/lib/internal/post/post.model";
 import { NextRequest, NextResponse } from "next/server";
+import { makePrivate } from "../shared/post/isPrivate";
 
 export const POST = async (req: NextRequest) => {
-    const { title, content } = await req.json();
+    const { title, content, isPrivate } = await req.json();
 
     const post = new Post({
         title,
         content,
+        isPrivate,
     });
 
     const user = await getLoggedInUser();
@@ -34,6 +36,10 @@ export const POST = async (req: NextRequest) => {
         },
     });
 
+    if (isPrivate) {
+        await makePrivate(result.id);
+    }
+
     return NextResponse.json({
         message: "게시글이 작성되었습니다.",
         result,
@@ -41,9 +47,25 @@ export const POST = async (req: NextRequest) => {
 };
 
 export const GET = async () => {
+    const user = await getLoggedInUser();
     const posts = await prisma.post.findMany({
         orderBy: {
             createdAt: "desc",
+        },
+        where: {
+            OR: [
+                {
+                    PostMeta: {
+                        none: {
+                            key: "isPrivate",
+                            value: "1",
+                        },
+                    },
+                },
+                {
+                    userId: user?.id,
+                },
+            ],
         },
     });
 

@@ -29,10 +29,11 @@ export const usePostMutation = ({
     });
 
     const { mutateAsync: createPost } = useMutation({
-        mutationFn: async ({ title, content }: Post) => {
+        mutationFn: async ({ title, content, isPrivate }: Post) => {
             const { data } = await api.post("/api/post", {
                 title,
                 content,
+                isPrivate,
             });
 
             return data;
@@ -44,10 +45,11 @@ export const usePostMutation = ({
     });
 
     const { mutateAsync: updatePost } = useMutation({
-        mutationFn: async ({ id, title, content }: Post) => {
+        mutationFn: async ({ id, title, content, isPrivate }: Post) => {
             const { data } = await api.patch(`/api/post/${id}`, {
                 title,
                 content,
+                isPrivate,
             });
 
             return data;

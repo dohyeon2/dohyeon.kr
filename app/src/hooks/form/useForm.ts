@@ -4,7 +4,7 @@ interface useFormArgs<T> {
     initialValue: T;
 }
 
-export const useForm = <T extends Record<string, string>>({
+export const useForm = <T extends Record<string, string | boolean | number>>({
     initialValue,
 }: useFormArgs<T>) => {
     const [data, setData] = useState<T>(initialValue);
@@ -12,6 +12,13 @@ export const useForm = <T extends Record<string, string>>({
     const onChange = <ET extends HTMLInputElement>(
         e: React.ChangeEvent<ET>
     ) => {
+        if (e.target.type === "checkbox") {
+            setData((prev) => ({
+                ...prev,
+                [e.target.name]: e.target.checked,
+            }));
+            return;
+        }
         setData((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,

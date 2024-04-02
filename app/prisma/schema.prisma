@@ -36,15 +36,27 @@ model Auth {
 }
 
 model Post {
-  id        String    @id @default(uuid())
+  id        String     @id @default(uuid())
   title     String
   content   String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deletedAt DateTime?
+  user      User       @relation(fields: [userId], references: [id])
+  userId    String
+  Comment   Comment[]
+  PostMeta  PostMeta[]
+}
+
+model PostMeta {
+  id        String    @id @default(uuid())
+  key       String
+  value     String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  user      User      @relation(fields: [userId], references: [id])
-  userId    String
-  Comment   Comment[]
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId    String
 }
 
 model Comment {

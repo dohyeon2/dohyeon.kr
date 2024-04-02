@@ -4,6 +4,7 @@ interface PostConstructorArgs {
     content?: string;
     createdAt?: Date;
     updatedAt?: Date;
+    isPrivate?: boolean;
 }
 
 export class Post {
@@ -12,6 +13,7 @@ export class Post {
     content: string;
     createdAt?: Date;
     updatedAt?: Date;
+    isPrivate?: boolean;
 
     constructor({
         id,
@@ -19,6 +21,7 @@ export class Post {
         content,
         createdAt,
         updatedAt,
+        isPrivate,
     }: PostConstructorArgs) {
         if (typeof title !== "string") throw new Error("title is required");
         if (typeof content !== "string") throw new Error("content is required");
@@ -28,5 +31,6 @@ export class Post {
         this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.isPrivate = isPrivate;
     }
 }
