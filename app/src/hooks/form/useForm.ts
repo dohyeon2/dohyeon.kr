@@ -4,7 +4,9 @@ interface useFormArgs<T> {
     initialValue: T;
 }
 
-export const useForm = <T extends Record<string, string | boolean | number>>({
+export const useForm = <
+    T extends Record<string, string | boolean | number | undefined>
+>({
     initialValue,
 }: useFormArgs<T>) => {
     const [data, setData] = useState<T>(initialValue);

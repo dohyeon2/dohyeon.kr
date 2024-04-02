@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/external/prisma";
 import { getLoggedInUser } from "@/lib/internal/auth";
 import { NextRequest, NextResponse } from "next/server";
-import { makePrivate } from "../../shared/post/isPrivate";
+import { isPrivate, makePrivate } from "../../shared/post/isPrivate";
 
 export const GET = async (
     req: NextRequest,
@@ -17,8 +17,13 @@ export const GET = async (
         },
     });
 
+    const privatePost = await isPrivate(id);
+
     return NextResponse.json({
-        result: post,
+        result: {
+            ...post,
+            isPrivate: privatePost,
+        },
     });
 };
 
@@ -77,5 +82,8 @@ export const PATCH = async (
         await makePrivate(id);
     }
 
-    return NextResponse.json(updated);
+    return NextResponse.json({
+        message: "게시글이 수정되었습니다.",
+        result: updated,
+    });
 };
