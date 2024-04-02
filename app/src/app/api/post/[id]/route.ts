@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/external/prisma";
 import { getLoggedInUser } from "@/lib/internal/auth";
 import { NextRequest, NextResponse } from "next/server";
+import { makePrivate } from "../../shared/post/isPrivate";
 
 export const GET = async (
     req: NextRequest,
@@ -48,7 +49,7 @@ export const PATCH = async (
         params: { id: string };
     }
 ) => {
-    const { title, content } = await req.json();
+    const { title, content, isPrivate } = await req.json();
 
     const user = await getLoggedInUser();
 
@@ -71,6 +72,10 @@ export const PATCH = async (
             content,
         },
     });
+
+    if (isPrivate) {
+        await makePrivate(id);
+    }
 
     return NextResponse.json(updated);
 };

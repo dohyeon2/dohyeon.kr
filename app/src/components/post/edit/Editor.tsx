@@ -27,9 +27,21 @@ export const Editor: React.FC<EditorProps> = ({
     });
 
     const [content, setContent] = useState<string>(initialData.content);
+    const [privatePost, setPrivatePost] = useState<boolean>(false);
 
     return (
         <div className="p-5 flex flex-col gap-4 h-full">
+            <label>
+                {privatePost ? "비공개" : "공개"}
+                <input
+                    type="checkbox"
+                    name="private"
+                    onChange={(e) => {
+                        setPrivatePost(e.currentTarget.checked);
+                    }}
+                    checked={privatePost}
+                />
+            </label>
             <Input
                 className="mx-auto block border-0 w-full text-2xl text-white"
                 label="제목"
@@ -56,6 +68,7 @@ export const Editor: React.FC<EditorProps> = ({
                     onSubmit?.({
                         title: data.title,
                         content,
+                        isPrivate: privatePost,
                     });
                 }}
             >
