@@ -14,5 +14,6 @@ export default {
         commonjsOptions: {
             transformMixedEsModules: true,
         },
+        outDir: "docs",
     },
 };
