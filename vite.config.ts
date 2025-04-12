@@ -10,6 +10,10 @@ export default defineConfig({
                 find: "utilities",
                 replacement: "/src/utilities",
             },
+            {
+                find: "constants",
+                replacement: "/src/constants",
+            },
         ],
     },
 });

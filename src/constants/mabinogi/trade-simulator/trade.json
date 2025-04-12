@@ -1,0 +1,230 @@
+[
+    {
+        "place": "오아시스",
+        "items": [
+            {
+                "name": "고운 모래",
+                "max": 25,
+                "bundle": 10,
+                "weight": 15,
+                "materials": [
+                    { "name": "매듭끈", "amount": 2 },
+                    { "name": "스태미나 500 포션", "amount": 3 }
+                ]
+            },
+            {
+                "name": "프리즌 고스트의 날개",
+                "max": 15,
+                "bundle": 7,
+                "weight": 15,
+                "materials": [
+                    { "name": "쿠션용 솜", "amount": 1 },
+                    { "name": "최고급 실크", "amount": 2 }
+                ]
+            },
+            {
+                "name": "오아시스 그림",
+                "max": 10,
+                "bundle": 7,
+                "weight": 20,
+                "materials": [
+                    { "name": "최고급 가죽끈", "amount": 1 },
+                    { "name": "질긴 실", "amount": 3 }
+                ]
+            },
+            {
+                "name": "선인장 꽃",
+                "max": 8,
+                "bundle": 7,
+                "weight": 25,
+                "materials": [
+                    { "name": "정령의 리큐르", "amount": 1 },
+                    { "name": "은판", "amount": 2 },
+                    { "name": "고급 옷감", "amount": 4 }
+                ]
+            },
+            {
+                "name": "거대 송곳니 화석",
+                "max": 3,
+                "bundle": 5,
+                "weight": 30,
+                "materials": [
+                    { "name": "펫 놀이 세트", "amount": 1 },
+                    { "name": "건초 더미", "amount": 3 },
+                    { "name": "마력이 깃든 나무장작", "amount": 5 }
+                ]
+            }
+        ]
+    },
+    {
+        "place": "카루 숲",
+        "items": [
+            {
+                "name": "우드 테이블",
+                "max": 25,
+                "bundle": 10,
+                "weight": 15,
+                "materials": [
+                    { "name": "실리엔", "amount": 2 },
+                    { "name": "새우 조련 미끼", "amount": 4 }
+                ]
+            },
+            {
+                "name": "목공예품",
+                "max": 15,
+                "bundle": 7,
+                "weight": 15,
+                "materials": [
+                    { "name": "질긴 끈", "amount": 2 },
+                    { "name": "마법의 양피지", "amount": 1 }
+                ]
+            },
+            {
+                "name": "스톤 홀스 조각상",
+                "max": 10,
+                "bundle": 7,
+                "weight": 20,
+                "materials": [
+                    { "name": "밀가루", "amount": 5 },
+                    { "name": "힐웬 합금", "amount": 2 }
+                ]
+            },
+            {
+                "name": "카루 표고 버섯",
+                "max": 8,
+                "bundle": 7,
+                "weight": 25,
+                "materials": [
+                    { "name": "중급 나무장작", "amount": 5 },
+                    { "name": "고급 실크", "amount": 4 },
+                    { "name": "스핀 기어", "amount": 1 }
+                ]
+            },
+            {
+                "name": "조개 껍질 화석",
+                "max": 3,
+                "bundle": 5,
+                "weight": 30,
+                "materials": [
+                    { "name": "마법의 깃털펜", "amount": 5 },
+                    { "name": "튼튼한 고리", "amount": 1 },
+                    { "name": "에너지 증폭 장치", "amount": 2 }
+                ]
+            }
+        ]
+    },
+    {
+        "place": "칼리다 호수",
+        "items": [
+            {
+                "name": "맥반석 계란",
+                "max": 25,
+                "bundle": 10,
+                "weight": 15,
+                "materials": [
+                    { "name": "고급 나무장작", "amount": 2 },
+                    { "name": "마나 500 포션", "amount": 1 }
+                ]
+            },
+            {
+                "name": "칼리다 연어",
+                "max": 15,
+                "bundle": 7,
+                "weight": 15,
+                "materials": [
+                    { "name": "정화된 토끼의 발", "amount": 1 },
+                    { "name": "에너지 컨버터", "amount": 1 }
+                ]
+            },
+            {
+                "name": "온천 입욕제",
+                "max": 10,
+                "bundle": 7,
+                "weight": 20,
+                "materials": [
+                    { "name": "끈끈이 풀", "amount": 3 },
+                    { "name": "최고급 바닐라 향초", "amount": 2 }
+                ]
+            },
+            {
+                "name": "대형 캠핑 텐트",
+                "max": 8,
+                "bundle": 7,
+                "weight": 25,
+                "materials": [
+                    { "name": "인조 잔디", "amount": 1 },
+                    { "name": "에메랄드 퓨즈", "amount": 1 },
+                    { "name": "고급 가죽끈", "amount": 5 }
+                ]
+            },
+            {
+                "name": "핑크 솔트",
+                "max": 3,
+                "bundle": 5,
+                "weight": 30,
+                "materials": [
+                    { "name": "미스릴 대못", "amount": 3 },
+                    { "name": "발리스타용 독 묻은 와이번 볼트", "amount": 3 },
+                    { "name": "최고급 나무장작", "amount": 3 }
+                ]
+            }
+        ]
+    },
+    {
+        "place": "페라 화산",
+        "items": [
+            {
+                "name": "화산 머드팩",
+                "max": 25,
+                "bundle": 10,
+                "weight": 15,
+                "materials": [
+                    { "name": "동판", "amount": 2 },
+                    { "name": "신비한 허브 가루", "amount": 3 }
+                ]
+            },
+            {
+                "name": "마그마 스톤",
+                "max": 15,
+                "bundle": 7,
+                "weight": 15,
+                "materials": [
+                    { "name": "미스릴판", "amount": 2 },
+                    { "name": "보릿가루", "amount": 3 }
+                ]
+            },
+            {
+                "name": "익시온의 뿔",
+                "max": 10,
+                "bundle": 7,
+                "weight": 20,
+                "materials": [
+                    { "name": "금판", "amount": 5 },
+                    { "name": "마리오네트 500 포션", "amount": 3 }
+                ]
+            },
+            {
+                "name": "화산 도마뱀의 알",
+                "max": 8,
+                "bundle": 7,
+                "weight": 25,
+                "materials": [
+                    { "name": "최고급 옷감", "amount": 5 },
+                    { "name": "생명력 500 포션", "amount": 2 },
+                    { "name": "빤짝이 종이", "amount": 5 }
+                ]
+            },
+            {
+                "name": "라스파 흑표범의 가죽",
+                "max": 3,
+                "bundle": 5,
+                "weight": 30,
+                "materials": [
+                    { "name": "뮤턴트", "amount": 1 },
+                    { "name": "특급 나무장작", "amount": 3 },
+                    { "name": "조화의 코스모스 퍼퓸", "amount": 2 }
+                ]
+            }
+        ]
+    }
+]
