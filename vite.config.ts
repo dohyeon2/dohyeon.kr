@@ -1,18 +1,18 @@
 export default {
     server: {
-      fs: {
-        strict: false
-      },
-      hmr: {
-        overlay: false
-      }
+        fs: {
+            strict: false,
+        },
+        hmr: {
+            overlay: false,
+        },
     },
     optimizeDeps: {
-      exclude: ['utterances']
+        exclude: ["utterances"],
     },
     build: {
-      commonjsOptions: {
-        transformMixedEsModules: true
-      }
-    }
-  };
+        commonjsOptions: {
+            transformMixedEsModules: true,
+        },
+    },
+};
