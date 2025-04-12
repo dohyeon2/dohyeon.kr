@@ -1,14 +1,12 @@
-import { html, LitElement } from "lit";
+import { LitElement, html } from "lit";
 import { customElement } from "lit/decorators.js";
-
 import "giscus";
 
-@customElement("main-page")
-export default class MainPage extends LitElement {
+@customElement("blog-page")
+export default class BlogPage extends LitElement {
     render() {
         return html`<div>
-            <h1>안녕하세요. Judo-Lab에 오신걸 환영합니다.</h1>
-            <div>${import.meta.env.VITE_VERSION}</div>
+            <h1>Blog</h1>
             <giscus-widget
                 id="comments"
                 repo="dohyeon2/dohyeon.kr"
@@ -21,6 +19,7 @@ export default class MainPage extends LitElement {
                 inputposition="top"
                 theme="light"
                 lang="ko"
+                strict="1"
                 loading="lazy"
             ></giscus-widget>
         </div>`;
