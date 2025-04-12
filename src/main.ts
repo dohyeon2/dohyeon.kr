@@ -6,6 +6,7 @@ import { customElement } from "lit/decorators.js";
 import "normalize.css";
 import "./pages";
 import "./components/layout/layout";
+import "./services";
 
 @customElement("app-root")
 export default class App extends LitElement {
@@ -17,6 +18,24 @@ export default class App extends LitElement {
             render: () => html`<trade-simulator></trade-simulator>`,
         },
     ]);
+
+    connectedCallback() {
+        super.connectedCallback();
+        // 네비게이션 이벤트 리스너 추가
+        window.addEventListener("navigate", async (e: Event) => {
+            const customEvent = e as CustomEvent;
+            await this.router.goto(customEvent.detail.path);
+        });
+    }
+
+    disconnectedCallback() {
+        // 이벤트 리스너 제거
+        window.removeEventListener("navigate", async (e: Event) => {
+            const customEvent = e as CustomEvent;
+            await this.router.goto(customEvent.detail.path);
+        });
+        super.disconnectedCallback();
+    }
 
     render() {
         return html`<global-layout>${this.router.outlet()}</global-layout> `;
