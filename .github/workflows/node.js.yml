@@ -24,9 +24,11 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: "npm"
+                  cache: "npm" 
             - run: npm ci
             - run: npm run build --if-present
+              env: 
+                  VITE_VERSION: ${{ github.run_id }}
             - name: Upload static files as artifact
               id: deployment
               uses: actions/upload-pages-artifact@v3 # or specific "vX.X.X" version tag for this action

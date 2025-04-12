@@ -8,9 +8,10 @@ export default class MainPage extends LitElement {
     render() {
         return html`<div>
             <h1>안녕하세요. Judo-Lab에 오신걸 환영합니다.</h1>
+            <div>${import.meta.env.VITE_VERSION}</div>
             <giscus-widget
                 id="comments"
-                repo="dohyeon2/judo-lab"
+                repo="dohyeon2/dohyeon.kr"
                 repoId="R_kgDOOXbiCA"
                 category="General"
                 categoryId="DIC_kwDOOXbiCM4Co-a0"
