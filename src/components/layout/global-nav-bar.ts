@@ -1,6 +1,6 @@
 import { html } from "lit";
 import { customElement } from "lit/decorators.js";
-import { TailwindElement } from "../../utilities/TailwindElement";
+import { TailwindElement } from "utilities/TailwindElement";
 
 @customElement("global-nav-bar")
 export default class GlobalNavBar extends TailwindElement {
@@ -12,7 +12,7 @@ export default class GlobalNavBar extends TailwindElement {
                 <div class="flex items-center">
                     <h1
                         @click=${() => window.NavigationService.navigateTo("/")}
-                        class="font-bold text-2xl"
+                        class="font-bold text-2xl cursor-pointer hover:opacity-70"
                     >
                         Dohyeon.kr
                     </h1>
@@ -20,9 +20,9 @@ export default class GlobalNavBar extends TailwindElement {
             </div>
             <div class="justify-end flex gap-2 flex-1 p-5">
                 <sl-button href="/blog">Blog</sl-button>
-                <sl-button href="/mabinogi/trade-simulator">
+                <!-- <sl-button href="/mabinogi/trade-simulator">
                     Trade Simulator
-                </sl-button>
+                </sl-button> -->
             </div>
         </div>`;
     }
