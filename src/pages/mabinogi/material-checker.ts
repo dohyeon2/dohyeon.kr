@@ -24,7 +24,7 @@ export class MaterialChecker extends TailwindElement {
     @property({ attribute: false })
     onCompletedChange: ((isCompleted: boolean) => void) | null = null;
 
-    private searchMarketTimeout: number | null = null;
+    private searchMarketTimeout: NodeJS.Timeout | null = null;
 
     updated(changedProperties: Map<string, unknown>) {
         if (changedProperties.has("isCompleted")) {
