@@ -41,7 +41,7 @@
     {
         "name": "쿠션용 솜",
         "ingredients": [
-            { "name": "가는 실뭉치", "amount": 5, "sourceAmount": 25 },
+            { "name": "가는 실뭉치", "amount": 5 },
             { "name": "고급 양털", "amount": 20 }
         ]
     },
@@ -52,7 +52,7 @@
     {
         "name": "최고급 실크",
         "ingredients": [
-            { "name": "가는 실뭉치", "amount": 6, "sourceAmount": 30 }
+            { "name": "가는 실뭉치", "amount": 6 }
         ]
     },
     {
@@ -66,7 +66,7 @@
     {
         "name": "질긴 실",
         "ingredients": [
-            { "name": "가는 실뭉치", "amount": 5, "sourceAmount": 25 }
+            { "name": "가는 실뭉치", "amount": 5 }
         ]
     },
     {
@@ -100,7 +100,13 @@
     {
         "name": "고급 옷감",
         "ingredients": [
-            { "name": "굵은 실뭉치", "amount": 5, "sourceAmount": 25 }
+            { "name": "굵은 실뭉치", "amount": 5 }
+        ]
+    },
+    {
+        "name": "최고급 옷감",
+        "ingredients": [
+            { "name": "굵은 실뭉치", "amount": 6 }
         ]
     },
     {
