@@ -1,4 +1,4 @@
-import { html } from "lit";
+import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { TailwindElement } from "utilities/TailwindElement";
 
@@ -26,30 +26,19 @@ export class CapacityInfoSection extends TailwindElement {
 
     render() {
         return html`
-            <div
-                class="p-4 border border-solid rounded-lg ${this.isOverSlot ||
-                this.isOverWeight
-                    ? "border-red-500 bg-red-50"
-                    : ""}"
-            >
+            <sl-card class="w-full">
                 <h2 class="text-lg font-semibold mb-2">적재 현황</h2>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <div class="flex items-center gap-2">
                             <p class="font-medium">슬롯:</p>
-                            <div
-                                class="flex-1 h-6 bg-gray-200 rounded-full overflow-hidden"
+                            <sl-progress-bar
+                                class="flex-1"
+                                value=${(this.usedSlot * 100) / this.totalSlot}
+                                data-over=${this.isOverSlot}
+                                size="small"
                             >
-                                <div
-                                    class="h-full ${this.isOverSlot
-                                        ? "bg-red-500"
-                                        : "bg-blue-500"} transition-all"
-                                    style="width: ${Math.min(
-                                        100,
-                                        (this.usedSlot / this.totalSlot) * 100
-                                    )}%"
-                                ></div>
-                            </div>
+                            </sl-progress-bar>
                             <p
                                 class="font-medium ${this.isOverSlot
                                     ? "text-red-500"
@@ -82,19 +71,14 @@ export class CapacityInfoSection extends TailwindElement {
                     <div>
                         <div class="flex items-center gap-2">
                             <p class="font-medium">무게:</p>
-                            <div
-                                class="flex-1 h-6 bg-gray-200 rounded-full overflow-hidden"
+                            <sl-progress-bar
+                                class="flex-1"
+                                value=${(this.usedWeight * 100) /
+                                this.totalWeight}
+                                data-over=${this.isOverWeight}
+                                size="small"
                             >
-                                <div
-                                    class="h-full ${this.isOverWeight
-                                        ? "bg-red-500"
-                                        : "bg-green-500"} transition-all"
-                                    style="width: ${Math.min(
-                                        100,
-                                        (this.usedWeight / this.totalWeight) * 100
-                                    )}%"
-                                ></div>
-                            </div>
+                            </sl-progress-bar>
                             <p
                                 class="font-medium ${this.isOverWeight
                                     ? "text-red-500"
@@ -135,7 +119,18 @@ export class CapacityInfoSection extends TailwindElement {
                           </div>
                       `
                     : ""}
-            </div>
+            </sl-card>
         `;
     }
-} 
+
+    static styles = [
+        css`
+            sl-progress-bar[data-over="true"] {
+                --indicator-color: var(--sl-color-red-500);
+            }
+            sl-progress-bar {
+                --indicator-color: var(--sl-color-green-500);
+            }
+        `,
+    ];
+}

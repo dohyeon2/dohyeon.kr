@@ -33,14 +33,15 @@ export class CompletedTradesSection extends TailwindElement {
         }
 
         return html`
-            <div class="p-4 border border-solid rounded-lg">
-                <h2 class="text-lg font-semibold mb-4">완료된 교역</h2>
-                <div class="space-y-2">
+            <sl-details summary="완료된 교역">
+                <div class="space-y-2 grid grid-cols-2 gap-2 grid-flow-dense">
                     ${recentTrades.map(
                         (trade) => html`
-                            <div class="p-3 border border-solid rounded-lg">
+                            <sl-card >
                                 <div class="text-sm text-gray-500 mb-2">
-                                    ${new Date(trade.completedAt).toLocaleString()}
+                                    ${new Date(
+                                        trade.completedAt
+                                    ).toLocaleString()}
                                 </div>
                                 <div class="space-y-1">
                                     ${trade.items.map(
@@ -52,11 +53,11 @@ export class CompletedTradesSection extends TailwindElement {
                                         `
                                     )}
                                 </div>
-                            </div>
+                            </sl-card>
                         `
                     )}
                 </div>
-            </div>
+            </sl-details>
         `;
     }
-} 
+}

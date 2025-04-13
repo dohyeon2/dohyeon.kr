@@ -31,7 +31,7 @@ export class ValueSelector extends TailwindElement {
     }
 
     render() {
-        return html`<sl-card class="p-4">
+        return html`<sl-card>
             <h2 class="text-lg font-semibold mb-2">${this.label}</h2>
             <sl-select
                 @sl-change=${(e: Event) => {
