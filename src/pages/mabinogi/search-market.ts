@@ -15,7 +15,7 @@ export class SearchMarket extends TailwindElement {
     private apiURL = "https://open.api.nexon.com/mabinogi/v1/auction/list";
 
     private apiKey =
-        "test_da554d8ba2c7f48a949eccc38b79685b6e761b8341b7298d44e6696506d972b6efe8d04e6d233bd35cf2fabdeb93fb0d";
+        "live_da554d8ba2c7f48a949eccc38b79685b7dce22dca1d10525b3be906fa3c0b9dfefe8d04e6d233bd35cf2fabdeb93fb0d";
 
     private cursor: string = "";
 
