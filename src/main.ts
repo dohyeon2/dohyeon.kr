@@ -1,7 +1,7 @@
 import { Router } from "@lit-labs/router";
 import "@shoelace-style/shoelace/dist/shoelace.js";
 import "@shoelace-style/shoelace/dist/themes/light.css";
-import { html, LitElement, PropertyValues } from "lit";
+import { html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
 import "normalize.css";
 import "./pages";
@@ -9,7 +9,7 @@ import "./components/layout/layout";
 import "./services";
 import { setBasePath } from "@shoelace-style/shoelace/dist/shoelace.js";
 
-setBasePath("/dist/shoelace");
+setBasePath("/shoelace");
 
 @customElement("app-root")
 export default class App extends LitElement {
