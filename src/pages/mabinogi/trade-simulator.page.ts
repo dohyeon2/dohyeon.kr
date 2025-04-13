@@ -6,6 +6,9 @@ import vehicleData from "constants/mabinogi/trade-simulator/vehicle.json";
 import partnerData from "constants/mabinogi/trade-simulator/partner.json";
 import titleData from "constants/mabinogi/trade-simulator/title.json";
 import "./material-checker";
+import "../../components/ui/selector";
+import "./components";
+import "./sections";
 
 interface Asset {
     name: string;
@@ -59,16 +62,33 @@ export default class TradeSimulatorPage extends TailwindElement {
     @state()
     private completedTrades: TradeSession[] = [];
 
-    @state()
-    private remainingTime: string = "";
-
     private updateTimer: number | null = null;
+
+    private get vehicleOptions() {
+        return vehicleData.map((vehicle) => ({
+            value: vehicle.name,
+            label: vehicle.name,
+        }));
+    }
+
+    private get partnerOptions() {
+        return partnerData.map((partner) => ({
+            value: partner.name,
+            label: partner.name,
+        }));
+    }
+
+    private get titleOptions() {
+        return titleData.map((title) => ({
+            value: title.name,
+            label: title.name,
+        }));
+    }
 
     connectedCallback() {
         super.connectedCallback();
         this.loadAllData();
         this.loadCompletedTrades();
-        this.startTimer();
     }
 
     disconnectedCallback() {
@@ -229,39 +249,6 @@ export default class TradeSimulatorPage extends TailwindElement {
         };
     }
 
-    private startTimer() {
-        this.updateRemainingTime();
-        this.updateTimer = window.setInterval(() => {
-            this.updateRemainingTime();
-        }, 1000);
-    }
-
-    private updateRemainingTime() {
-        const now = new Date();
-        const targetDay = 4; // 목요일
-        const targetHour = 7;
-
-        let nextThursday = new Date(now);
-        nextThursday.setDate(
-            now.getDate() + ((targetDay + 7 - now.getDay()) % 7)
-        );
-        nextThursday.setHours(targetHour, 0, 0, 0);
-
-        if (now > nextThursday) {
-            nextThursday.setDate(nextThursday.getDate() + 7);
-        }
-
-        const diff = nextThursday.getTime() - now.getTime();
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-            (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        this.remainingTime = `${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
-    }
-
     private completeTrade() {
         const newTrade: TradeSession = {
             completedAt: Date.now(),
@@ -289,39 +276,13 @@ export default class TradeSimulatorPage extends TailwindElement {
         );
     }
 
-    private getUsedItemQuantity(itemName: string): number {
-        const now = Date.now();
-        const oneWeek = 7 * 24 * 60 * 60 * 1000;
-
-        return this.completedTrades
-            .filter((trade) => now - trade.completedAt < oneWeek)
-            .reduce((total, trade) => {
-                const item = trade.items.find((i) => i.item.name === itemName);
-                return total + (item?.quantity || 0);
-            }, 0);
-    }
-
-    private getRemainingItemMax(item: TradeItem): number {
-        const usedQuantity = this.getUsedItemQuantity(item.name);
-        return Math.max(0, item.max - usedQuantity);
-    }
-
     render() {
-        const { totalSlot, totalWeight } = this.calculateTotalCapacity();
-        const { usedSlot, usedWeight } = this.calculateCurrentUsage();
-        const { isOverSlot, isOverWeight } = this.isOverCapacity();
-
         return html`
             <div class="flex flex-col gap-4 mx-auto max-w-screen-lg p-5">
                 <div class="flex justify-between items-center">
                     <h1 class="text-2xl font-bold">교역 시뮬레이터</h1>
                     <div class="flex items-center gap-4">
-                        <div class="text-sm">
-                            <div class="font-medium">다음 초기화까지</div>
-                            <div class="text-blue-600">
-                                ${this.remainingTime}
-                            </div>
-                        </div>
+                        <reset-timer></reset-timer>
                         <button
                             class="px-3 py-1 text-sm text-red-600 border border-solid border-red-600 rounded hover:bg-red-50"
                             @click=${() => this.clearAllData()}
@@ -330,486 +291,54 @@ export default class TradeSimulatorPage extends TailwindElement {
                         </button>
                     </div>
                 </div>
+                <asset-selector-section
+                    .onVehicleChange=${(vehicle: Asset | null) => {
+                        this.saveVehicle(vehicle);
+                    }}
+                    .onPartnerChange=${(partner: Asset | null) => {
+                        this.savePartner(partner);
+                    }}
+                    .onTitleChange=${(title: Asset | null) => {
+                        this.saveTitle(title);
+                    }}
+                    .selectedVehicle=${this.selectedVehicle?.name}
+                    .selectedPartner=${this.selectedPartner?.name}
+                    .selectedTitle=${this.selectedTitle?.name}
+                ></asset-selector-section>
 
-                <!-- 자산 선택 섹션 -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="p-4 border border-solid rounded-lg">
-                        <h2 class="text-lg font-semibold mb-2">운송 수단</h2>
-                        <select
-                            class="w-full p-2 border border-solid rounded"
-                            @change=${(e: Event) => {
-                                const select = e.target as HTMLSelectElement;
-                                this.saveVehicle(
-                                    vehicleData.find(
-                                        (v) => v.name === select.value
-                                    ) || null
-                                );
-                            }}
-                        >
-                            <option value="">선택하세요</option>
-                            ${vehicleData.map(
-                                (vehicle) => html`
-                                    <option
-                                        value=${vehicle.name}
-                                        ?selected=${vehicle.name ===
-                                        this.selectedVehicle?.name}
-                                    >
-                                        ${vehicle.name}
-                                    </option>
-                                `
-                            )}
-                        </select>
-                    </div>
+                <capacity-info-section
+                    .selectedVehicle=${this.selectedVehicle}
+                    .selectedPartner=${this.selectedPartner}
+                    .selectedTitle=${this.selectedTitle}
+                    .totalWeight=${this.calculateTotalCapacity().totalWeight}
+                    .totalSlot=${this.calculateTotalCapacity().totalSlot}
+                    .usedWeight=${this.calculateCurrentUsage().usedWeight}
+                    .usedSlot=${this.calculateCurrentUsage().usedSlot}
+                ></capacity-info-section>
 
-                    <div class="p-4 border border-solid rounded-lg">
-                        <h2 class="text-lg font-semibold mb-2">파트너</h2>
-                        <select
-                            class="w-full p-2 border border-solid rounded"
-                            @change=${(e: Event) => {
-                                const select = e.target as HTMLSelectElement;
-                                this.savePartner(
-                                    partnerData.find(
-                                        (p) => p.name === select.value
-                                    ) || null
-                                );
-                            }}
-                        >
-                            <option value="">선택하세요</option>
-                            ${partnerData.map(
-                                (partner) => html`
-                                    <option
-                                        value=${partner.name}
-                                        ?selected=${partner.name ===
-                                        this.selectedPartner?.name}
-                                    >
-                                        ${partner.name}
-                                    </option>
-                                `
-                            )}
-                        </select>
-                    </div>
+                <trade-item-selector-section
+                    .completedItems=${this.completedTrades.flatMap((trade) =>
+                        trade.items.flatMap((item) => item)
+                    )}
+                    .selectedItems=${this.selectedItems}
+                    .onItemsChange=${(
+                        items: Array<{ item: TradeItem; quantity: number }>
+                    ) => {
+                        this.saveItems(items);
+                    }}
+                    .onComplete=${() => {
+                        this.completeTrade();
+                    }}
+                ></trade-item-selector-section>
 
-                    <div class="p-4 border border-solid rounded-lg">
-                        <h2 class="text-lg font-semibold mb-2">칭호</h2>
-                        <select
-                            class="w-full p-2 border border-solid rounded"
-                            @change=${(e: Event) => {
-                                const select = e.target as HTMLSelectElement;
-                                this.saveTitle(
-                                    titleData.find(
-                                        (t) => t.name === select.value
-                                    ) || null
-                                );
-                            }}
-                        >
-                            <option value="">선택하세요</option>
-                            ${titleData.map(
-                                (title) => html`
-                                    <option
-                                        value=${title.name}
-                                        ?selected=${title.name ===
-                                        this.selectedTitle?.name}
-                                    >
-                                        ${title.name}
-                                    </option>
-                                `
-                            )}
-                        </select>
-                    </div>
-                </div>
+                <completed-trades-section
+                    .completedTrades=${this.completedTrades}
+                ></completed-trades-section>
 
-                <!-- 용량 정보 -->
-                <div
-                    class="p-4 border border-solid rounded-lg ${isOverSlot ||
-                    isOverWeight
-                        ? "border-red-500 bg-red-50"
-                        : ""}"
-                >
-                    <h2 class="text-lg font-semibold mb-2">적재 현황</h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <p class="font-medium">슬롯:</p>
-                                <div
-                                    class="flex-1 h-6 bg-gray-200 rounded-full overflow-hidden"
-                                >
-                                    <div
-                                        class="h-full ${isOverSlot
-                                            ? "bg-red-500"
-                                            : "bg-blue-500"} transition-all"
-                                        style="width: ${Math.min(
-                                            100,
-                                            (usedSlot / totalSlot) * 100
-                                        )}%"
-                                    ></div>
-                                </div>
-                                <p
-                                    class="font-medium ${isOverSlot
-                                        ? "text-red-500"
-                                        : ""}"
-                                >
-                                    ${usedSlot} / ${totalSlot}
-                                </p>
-                            </div>
-                            ${isOverSlot
-                                ? html`<p
-                                      class="text-red-500 text-sm mt-1 flex items-center gap-1"
-                                  >
-                                      <svg
-                                          class="w-4 h-4"
-                                          fill="none"
-                                          stroke="currentColor"
-                                          viewBox="0 0 24 24"
-                                      >
-                                          <path
-                                              stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                              stroke-width="2"
-                                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                                          />
-                                      </svg>
-                                      슬롯 초과!
-                                  </p>`
-                                : ""}
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <p class="font-medium">무게:</p>
-                                <div
-                                    class="flex-1 h-6 bg-gray-200 rounded-full overflow-hidden"
-                                >
-                                    <div
-                                        class="h-full ${isOverWeight
-                                            ? "bg-red-500"
-                                            : "bg-green-500"} transition-all"
-                                        style="width: ${Math.min(
-                                            100,
-                                            (usedWeight / totalWeight) * 100
-                                        )}%"
-                                    ></div>
-                                </div>
-                                <p
-                                    class="font-medium ${isOverWeight
-                                        ? "text-red-500"
-                                        : ""}"
-                                >
-                                    ${usedWeight} / ${totalWeight}
-                                </p>
-                            </div>
-                            ${isOverWeight
-                                ? html`<p
-                                      class="text-red-500 text-sm mt-1 flex items-center gap-1"
-                                  >
-                                      <svg
-                                          class="w-4 h-4"
-                                          fill="none"
-                                          stroke="currentColor"
-                                          viewBox="0 0 24 24"
-                                      >
-                                          <path
-                                              stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                              stroke-width="2"
-                                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                                          />
-                                      </svg>
-                                      무게 초과!
-                                  </p>`
-                                : ""}
-                        </div>
-                    </div>
-                    ${isOverSlot || isOverWeight
-                        ? html`
-                              <div
-                                  class="mt-4 p-2 bg-red-100 rounded text-red-700 text-sm"
-                              >
-                                  ⚠️ 현재 적재량이 최대 용량을 초과했습니다.
-                                  교역품 수량을 조정해주세요.
-                              </div>
-                          `
-                        : ""}
-                </div>
-
-                <!-- 교역품 선택 섹션 -->
-                <div class="p-4 border border-solid rounded-lg">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold">교역품 선택</h2>
-                        <button
-                            class="px-3 py-1 text-sm text-green-600 border border-solid border-green-600 rounded hover:bg-green-50"
-                            ?disabled=${this.selectedItems.length === 0}
-                            @click=${() => this.completeTrade()}
-                        >
-                            교역 완료
-                        </button>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        ${tradeData.map(
-                            (place) => html`
-                                <div class="p-4 border border-solid rounded-lg">
-                                    <h3 class="text-lg font-medium mb-2">
-                                        ${place.place}
-                                    </h3>
-                                    ${place.items.map((item) => {
-                                        const remainingMax =
-                                            this.getRemainingItemMax(item);
-                                        const usedQuantity =
-                                            this.getUsedItemQuantity(item.name);
-                                        return html`
-                                            <div
-                                                class="flex items-center gap-2 mb-2"
-                                            >
-                                                <span class="flex-1">
-                                                    ${item.name}
-                                                    <span
-                                                        class="text-sm text-gray-500"
-                                                    >
-                                                        (남은 개수:
-                                                        ${remainingMax}개
-                                                        ${usedQuantity > 0
-                                                            ? html`/ 사용:
-                                                              ${usedQuantity}개`
-                                                            : ""})
-                                                    </span>
-                                                </span>
-                                                <div
-                                                    class="flex items-center gap-1"
-                                                >
-                                                    <input
-                                                        type="number"
-                                                        min="0"
-                                                        max=${remainingMax}
-                                                        placeholder="0"
-                                                        value=${this.selectedItems.find(
-                                                            (si) =>
-                                                                si.item.name ===
-                                                                item.name
-                                                        )?.quantity || ""}
-                                                        class="w-20 p-1 border border-solid rounded"
-                                                        ?disabled=${remainingMax ===
-                                                        0}
-                                                        @change=${(
-                                                            e: Event
-                                                        ) => {
-                                                            const input =
-                                                                e.target as HTMLInputElement;
-                                                            const quantity =
-                                                                parseInt(
-                                                                    input.value
-                                                                ) || 0;
-
-                                                            let newItems = [
-                                                                ...this
-                                                                    .selectedItems,
-                                                            ];
-                                                            const existingItemIndex =
-                                                                newItems.findIndex(
-                                                                    (si) =>
-                                                                        si.item
-                                                                            .name ===
-                                                                        item.name
-                                                                );
-
-                                                            if (quantity > 0) {
-                                                                if (
-                                                                    existingItemIndex >=
-                                                                    0
-                                                                ) {
-                                                                    newItems[
-                                                                        existingItemIndex
-                                                                    ].quantity =
-                                                                        quantity;
-                                                                } else {
-                                                                    newItems = [
-                                                                        ...newItems,
-                                                                        {
-                                                                            item,
-                                                                            quantity,
-                                                                        },
-                                                                    ];
-                                                                }
-                                                            } else {
-                                                                if (
-                                                                    existingItemIndex >=
-                                                                    0
-                                                                ) {
-                                                                    newItems =
-                                                                        newItems.filter(
-                                                                            (
-                                                                                _,
-                                                                                index
-                                                                            ) =>
-                                                                                index !==
-                                                                                existingItemIndex
-                                                                        );
-                                                                }
-                                                            }
-
-                                                            this.saveItems(
-                                                                newItems
-                                                            );
-                                                        }}
-                                                    />
-                                                    <div class="flex gap-1">
-                                                        <button
-                                                            class="px-2 py-1 text-xs text-blue-600 border border-solid border-blue-600 rounded hover:bg-blue-50"
-                                                            ?disabled=${remainingMax ===
-                                                            0}
-                                                            @click=${() => {
-                                                                let newItems = [
-                                                                    ...this
-                                                                        .selectedItems,
-                                                                ];
-                                                                const existingItemIndex =
-                                                                    newItems.findIndex(
-                                                                        (si) =>
-                                                                            si
-                                                                                .item
-                                                                                .name ===
-                                                                            item.name
-                                                                    );
-
-                                                                if (
-                                                                    existingItemIndex >=
-                                                                    0
-                                                                ) {
-                                                                    newItems[
-                                                                        existingItemIndex
-                                                                    ].quantity =
-                                                                        remainingMax;
-                                                                } else {
-                                                                    newItems = [
-                                                                        ...newItems,
-                                                                        {
-                                                                            item,
-                                                                            quantity:
-                                                                                remainingMax,
-                                                                        },
-                                                                    ];
-                                                                }
-
-                                                                this.saveItems(
-                                                                    newItems
-                                                                );
-                                                            }}
-                                                        >
-                                                            최대
-                                                        </button>
-                                                        <button
-                                                            class="px-2 py-1 text-xs text-red-600 border border-solid border-red-600 rounded hover:bg-red-50"
-                                                            ?disabled=${!this.selectedItems.find(
-                                                                (si) =>
-                                                                    si.item
-                                                                        .name ===
-                                                                    item.name
-                                                            )}
-                                                            @click=${() => {
-                                                                let newItems = [
-                                                                    ...this
-                                                                        .selectedItems,
-                                                                ];
-                                                                const existingItemIndex =
-                                                                    newItems.findIndex(
-                                                                        (si) =>
-                                                                            si
-                                                                                .item
-                                                                                .name ===
-                                                                            item.name
-                                                                    );
-
-                                                                if (
-                                                                    existingItemIndex >=
-                                                                    0
-                                                                ) {
-                                                                    newItems =
-                                                                        newItems.filter(
-                                                                            (
-                                                                                _,
-                                                                                index
-                                                                            ) =>
-                                                                                index !==
-                                                                                existingItemIndex
-                                                                        );
-                                                                    this.saveItems(
-                                                                        newItems
-                                                                    );
-                                                                }
-                                                            }}
-                                                        >
-                                                            취소
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        `;
-                                    })}
-                                </div>
-                            `
-                        )}
-                    </div>
-                </div>
-
-                <!-- 이번 주 완료된 교역 목록 -->
-                ${this.completedTrades.length > 0
-                    ? html`
-                          <div class="p-4 border border-solid rounded-lg">
-                              <h2 class="text-lg font-semibold mb-4">
-                                  완료된 교역
-                              </h2>
-                              <div class="space-y-2">
-                                  ${this.completedTrades
-                                      .filter(
-                                          (trade) =>
-                                              Date.now() - trade.completedAt <
-                                              7 * 24 * 60 * 60 * 1000
-                                      )
-                                      .map(
-                                          (trade) => html`
-                                              <div
-                                                  class="p-3 border border-solid rounded-lg"
-                                              >
-                                                  <div
-                                                      class="text-sm text-gray-500 mb-2"
-                                                  >
-                                                      ${new Date(
-                                                          trade.completedAt
-                                                      ).toLocaleString()}
-                                                  </div>
-                                                  <div class="space-y-1">
-                                                      ${trade.items.map(
-                                                          ({
-                                                              item,
-                                                              quantity,
-                                                          }) => html`
-                                                              <div
-                                                                  class="flex justify-between"
-                                                              >
-                                                                  <span
-                                                                      >${item.name}</span
-                                                                  >
-                                                                  <span
-                                                                      >${quantity}개</span
-                                                                  >
-                                                              </div>
-                                                          `
-                                                      )}
-                                                  </div>
-                                              </div>
-                                          `
-                                      )}
-                              </div>
-                          </div>
-                      `
-                    : ""}
-                <div class="grid grid-cols-1 gap-4">
-                    ${this.selectedItems.flatMap((item) => {
-                        return item.item.materials.map((material) => {
-                            return html`<material-checker
-                                material="${material.name}"
-                                amount="${material.amount * item.quantity}"
-                            ></material-checker>`;
-                        });
-                    })}
-                </div>
+                <material-checklist-section
+                    .completedTrades=${this.completedTrades}
+                    .selectedItems=${this.selectedItems}
+                ></material-checklist-section>
             </div>
         `;
     }

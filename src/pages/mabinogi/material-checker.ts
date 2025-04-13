@@ -1,8 +1,10 @@
+import classNames from "classnames";
+import materialsData from "constants/mabinogi/trade-simulator/materials.json";
 import { html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { TailwindElement } from "utilities/TailwindElement";
-import materialsData from "constants/mabinogi/trade-simulator/materials.json";
 import { classMap } from "lit/directives/class-map.js";
+import { TailwindElement } from "utilities/TailwindElement";
+import ToastContainer from "../../components/ui/toast-container";
 import "./search-market";
 
 @customElement("material-checker")
@@ -19,7 +21,16 @@ export class MaterialChecker extends TailwindElement {
     @property({ type: Boolean })
     searchMarket: boolean = false;
 
+    @property({ attribute: false })
+    onCompletedChange: ((isCompleted: boolean) => void) | null = null;
+
     private searchMarketTimeout: number | null = null;
+
+    updated(changedProperties: Map<string, unknown>) {
+        if (changedProperties.has("isCompleted")) {
+            this.onCompletedChange?.(this.isCompleted);
+        }
+    }
 
     render() {
         const material = materialsData.find((m) => m.name === this.material);
@@ -33,12 +44,18 @@ export class MaterialChecker extends TailwindElement {
         const ingredients = material.ingredients ?? [];
 
         return html`<div
-            class="flex flex-col gap-2 p-3 border rounded-md border-gray-300 border-solid"
+            class="flex flex-col gap-2 p-3 border rounded-md border-gray-300 border-solid ${classMap(
+                {
+                    "bg-green-300": this.isCompleted,
+                    "opacity-45": this.isCompleted,
+                }
+            )}"
         >
             <div class="flex gap-2">
                 <input
                     type="checkbox"
                     .checked=${this.isCompleted}
+                    class="w-6 h-6"
                     @change=${(e: Event) => {
                         this.isCompleted = (
                             e.target as HTMLInputElement
@@ -46,11 +63,23 @@ export class MaterialChecker extends TailwindElement {
                     }}
                 />
                 <div
-                    class="${classMap({
-                        "line-through": this.isCompleted,
+                    class="${classNames({
+                        "line-through opacity-30": this.isCompleted,
                     })} text-left flex-1 hover:bg-gray-100 cursor-pointer relative"
                     @click=${() => {
-                        this.isCompleted = !this.isCompleted;
+                        ToastContainer.toast(
+                            `이름이 복사되었습니다  : ${this.material}`
+                        );
+                        if (navigator.clipboard) {
+                            navigator.clipboard.writeText(this.material);
+                        } else {
+                            const textarea = document.createElement("textarea");
+                            textarea.value = this.material;
+                            document.body.appendChild(textarea);
+                            textarea.select();
+                            document.execCommand("copy");
+                            document.body.removeChild(textarea);
+                        }
                     }}
                     @pointerenter=${() => {
                         this.searchMarketTimeout &&
