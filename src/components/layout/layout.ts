@@ -1,16 +1,18 @@
-import { LitElement, html } from "lit";
+import { html } from "lit";
 import { customElement } from "lit/decorators.js";
+import { TailwindElement } from "utilities/TailwindElement";
+import "./footer";
 import "./global-nav-bar";
 
 @customElement("global-layout")
-export default class GlobalLayout extends LitElement {
+export default class GlobalLayout extends TailwindElement {
     render() {
-        return html`<div>
+        return html`<div class="flex flex-col min-h-screen">
             <global-nav-bar></global-nav-bar>
-            <div>
-                version : ${import.meta.env.VITE_VERSION ?? "development"}
+            <div class="flex-1">
+                <slot></slot>
             </div>
-            <slot></slot>
+            <global-footer></global-footer>
         </div>`;
     }
 }

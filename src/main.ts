@@ -15,7 +15,7 @@ export default class App extends LitElement {
         { path: "/blog", render: () => html`<blog-page></blog-page>` },
         {
             path: "/mabinogi/trade-simulator",
-            render: () => html`<trade-simulator></trade-simulator>`,
+            render: () => html`<trade-simulator-page></trade-simulator-page>`,
         },
     ]);
 

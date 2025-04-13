@@ -1,0 +1,44 @@
+[
+    {
+        "name": "등짐",
+        "slot": 4,
+        "weight": 400
+    },
+    {
+        "name": "손수레",
+        "slot": 6,
+        "weight": 800
+    },
+    {
+        "name": "마차",
+        "slot": 8,
+        "weight": 900
+    },
+    {
+        "name": "알파카(마차)",
+        "bonus": {
+            "slot": 10,
+            "weight": 1100
+        }
+    },
+    {
+        "name": "코끼리",
+        "slot": 7,
+        "weight": 1700
+    },
+    {
+        "name": "개썰매",
+        "slot": 11,
+        "weight": 700
+    },
+    {
+        "name": "낙타",
+        "slot": 7,
+        "weight": 1400
+    },
+    {
+        "name": "부유선",
+        "slot": 8,
+        "weight": 1200
+    }
+]
