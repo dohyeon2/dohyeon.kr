@@ -26,7 +26,10 @@ export class CapacityInfoSection extends TailwindElement {
 
     render() {
         return html`
-            <sl-card class="w-full">
+            <sl-card
+                class="w-full"
+                data-over=${this.isOverSlot || this.isOverWeight}
+            >
                 <h2 class="text-lg font-semibold mb-2">적재 현황</h2>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
@@ -130,6 +133,10 @@ export class CapacityInfoSection extends TailwindElement {
             }
             sl-progress-bar {
                 --indicator-color: var(--sl-color-green-500);
+            }
+            sl-card[data-over="true"]::part(base) {
+                background-color: var(--sl-color-red-50);
+                --border-color: var(--sl-color-red-500);
             }
         `,
     ];

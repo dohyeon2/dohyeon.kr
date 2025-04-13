@@ -28,29 +28,29 @@ export class AssetSelectorSection extends TailwindElement {
     onTitleChange: ((title: Asset | null) => void) | null = null;
 
     private get vehicleOptions() {
-        return vehicleData.map(vehicle => ({
+        return vehicleData.map((vehicle) => ({
             value: vehicle.name,
-            label: vehicle.name
+            label: vehicle.name,
         }));
     }
 
     private get partnerOptions() {
-        return partnerData.map(partner => ({
+        return partnerData.map((partner) => ({
             value: partner.name,
-            label: partner.name
+            label: partner.name,
         }));
     }
 
     private get titleOptions() {
-        return titleData.map(title => ({
+        return titleData.map((title) => ({
             value: title.name,
-            label: title.name
+            label: title.name,
         }));
     }
 
     render() {
         return html`
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 w-full gap-4">
                 <value-selector
                     label="운송 수단"
                     .options=${this.vehicleOptions}
@@ -83,4 +83,4 @@ export class AssetSelectorSection extends TailwindElement {
             </div>
         `;
     }
-} 
+}

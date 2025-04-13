@@ -36,7 +36,7 @@ export class TradeItemSelectorSection extends TailwindElement {
 
     render() {
         return html`
-            <div class="p-4 border border-solid rounded-lg">
+            <sl-card class="w-full">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold">교역품 선택</h2>
                     <button
@@ -50,7 +50,7 @@ export class TradeItemSelectorSection extends TailwindElement {
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     ${tradeData.map(
                         (place) => html`
-                            <div class="p-4 border border-solid rounded-lg">
+                            <sl-card>
                                 <h3 class="text-lg font-medium mb-2">
                                     ${place.place}
                                 </h3>
@@ -141,11 +141,11 @@ export class TradeItemSelectorSection extends TailwindElement {
                                         </div>
                                     `;
                                 })}
-                            </div>
+                            </sl-card>
                         `
                     )}
                 </div>
-            </div>
+            </sl-card>
         `;
     }
 
