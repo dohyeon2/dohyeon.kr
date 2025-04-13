@@ -1,10 +1,11 @@
+import classNames from "classnames";
+import materialsData from "constants/mabinogi/trade-simulator/materials.json";
 import { html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { TailwindElement } from "utilities/TailwindElement";
-import materialsData from "constants/mabinogi/trade-simulator/materials.json";
 import { classMap } from "lit/directives/class-map.js";
-import "./search-market";
+import { TailwindElement } from "utilities/TailwindElement";
 import ToastContainer from "../../components/ui/toast-container";
+import "./search-market";
 
 @customElement("material-checker")
 export class MaterialChecker extends TailwindElement {
@@ -62,8 +63,8 @@ export class MaterialChecker extends TailwindElement {
                     }}
                 />
                 <div
-                    class="${classMap({
-                        "line-through": this.isCompleted,
+                    class="${classNames({
+                        "line-through opacity-30": this.isCompleted,
                     })} text-left flex-1 hover:bg-gray-100 cursor-pointer relative"
                     @click=${() => {
                         ToastContainer.toast(

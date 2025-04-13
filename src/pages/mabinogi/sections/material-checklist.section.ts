@@ -33,4 +33,4 @@ export class MaterialChecklistSection extends TailwindElement {
             </div>
         `;
     }
-} 
+}

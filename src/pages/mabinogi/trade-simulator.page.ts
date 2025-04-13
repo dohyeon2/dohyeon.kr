@@ -306,6 +306,16 @@ export default class TradeSimulatorPage extends TailwindElement {
                     .selectedTitle=${this.selectedTitle?.name}
                 ></asset-selector-section>
 
+                <capacity-info-section
+                    .selectedVehicle=${this.selectedVehicle}
+                    .selectedPartner=${this.selectedPartner}
+                    .selectedTitle=${this.selectedTitle}
+                    .totalWeight=${this.calculateTotalCapacity().totalWeight}
+                    .totalSlot=${this.calculateTotalCapacity().totalSlot}
+                    .usedWeight=${this.calculateCurrentUsage().usedWeight}
+                    .usedSlot=${this.calculateCurrentUsage().usedSlot}
+                ></capacity-info-section>
+
                 <trade-item-selector-section
                     .completedItems=${this.completedTrades.flatMap((trade) =>
                         trade.items.flatMap((item) => item)
@@ -320,6 +330,15 @@ export default class TradeSimulatorPage extends TailwindElement {
                         this.completeTrade();
                     }}
                 ></trade-item-selector-section>
+
+                <completed-trades-section
+                    .completedTrades=${this.completedTrades}
+                ></completed-trades-section>
+
+                <material-checklist-section
+                    .completedTrades=${this.completedTrades}
+                    .selectedItems=${this.selectedItems}
+                ></material-checklist-section>
             </div>
         `;
     }

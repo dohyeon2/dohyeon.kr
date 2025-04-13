@@ -62,7 +62,6 @@ export class TradeItemSelectorSection extends TailwindElement {
     }
 
     render() {
-        console.log(this.completedItems);
         return html`
             <sl-card class="w-full">
                 <div class="flex justify-between items-center mb-4">
@@ -100,7 +99,7 @@ export class TradeItemSelectorSection extends TailwindElement {
                                             )}"
                                         >
                                             <span class="flex-1">
-                                                ${item.name}
+                                                ${item.name}<br />
                                                 <span
                                                     class="text-sm text-gray-500"
                                                 >
