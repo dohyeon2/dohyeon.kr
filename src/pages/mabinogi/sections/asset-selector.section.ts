@@ -1,4 +1,4 @@
-import { html } from "lit";
+import { html, PropertyValues } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { TailwindElement } from "utilities/TailwindElement";
 import vehicleData from "constants/mabinogi/trade-simulator/vehicle.json";
@@ -27,6 +27,15 @@ export class AssetSelectorSection extends TailwindElement {
     @property({ attribute: false })
     onTitleChange: ((title: Asset | null) => void) | null = null;
 
+    @property({ type: String })
+    selectedVehicle: string | undefined = undefined;
+
+    @property({ type: String })
+    selectedPartner: string | undefined = undefined;
+
+    @property({ type: String })
+    selectedTitle: string | undefined = undefined;
+
     private get vehicleOptions() {
         return vehicleData.map((vehicle) => ({
             value: vehicle.name,
@@ -48,37 +57,45 @@ export class AssetSelectorSection extends TailwindElement {
         }));
     }
 
+    private onChange =
+        (type: "vehicle" | "partner" | "title") => (value?: string) => {
+            if (type === "vehicle") {
+                this.onVehicleChange?.(
+                    vehicleData.find((v) => v.name === value) || null
+                );
+            } else if (type === "partner") {
+                this.onPartnerChange?.(
+                    partnerData.find((p) => p.name === value) || null
+                );
+            } else if (type === "title") {
+                this.onTitleChange?.(
+                    titleData.find((t) => t.name === value) || null
+                );
+            }
+        };
+
     render() {
         return html`
             <div class="grid grid-cols-1 md:grid-cols-3 w-full gap-4">
                 <value-selector
                     label="운송 수단"
                     .options=${this.vehicleOptions}
-                    .onChange=${(value: string) => {
-                        this.onVehicleChange?.(
-                            vehicleData.find((v) => v.name === value) || null
-                        );
-                    }}
+                    .value=${this.selectedVehicle}
+                    .onChange=${this.onChange("vehicle")}
                 ></value-selector>
 
                 <value-selector
                     label="파트너"
                     .options=${this.partnerOptions}
-                    .onChange=${(value: string) => {
-                        this.onPartnerChange?.(
-                            partnerData.find((p) => p.name === value) || null
-                        );
-                    }}
+                    .value=${this.selectedPartner}
+                    .onChange=${this.onChange("partner")}
                 ></value-selector>
 
                 <value-selector
                     label="칭호"
                     .options=${this.titleOptions}
-                    .onChange=${(value: string) => {
-                        this.onTitleChange?.(
-                            titleData.find((t) => t.name === value) || null
-                        );
-                    }}
+                    .value=${this.selectedTitle}
+                    .onChange=${this.onChange("title")}
                 ></value-selector>
             </div>
         `;

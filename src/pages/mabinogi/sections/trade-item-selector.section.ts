@@ -2,7 +2,8 @@ import { html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { TailwindElement } from "utilities/TailwindElement";
 import tradeData from "constants/mabinogi/trade-simulator/trade.json";
-import { classMap } from "lit/directives/class-map.js";
+import { SlChangeEvent } from "@shoelace-style/shoelace";
+import classNames from "classnames";
 
 interface TradeItem {
     name: string;
@@ -18,6 +19,9 @@ interface TradeItem {
 @customElement("trade-item-selector-section")
 export class TradeItemSelectorSection extends TailwindElement {
     @property({ attribute: false })
+    completedItems: Array<{ item: TradeItem; quantity: number }> = [];
+
+    @property({ attribute: false })
     selectedItems: Array<{ item: TradeItem; quantity: number }> = [];
 
     @property({ attribute: false })
@@ -28,13 +32,37 @@ export class TradeItemSelectorSection extends TailwindElement {
     @property({ attribute: false })
     onComplete: (() => void) | null = null;
 
-    @property({ type: Function })
-    getRemainingItemMax: (item: TradeItem) => number = () => 0;
+    private getRemainingMax(item: TradeItem) {
+        const usedQuantity =
+            this.completedItems.reduce((acc, ci) => {
+                if (ci.item.name === item.name) {
+                    return acc + ci.quantity;
+                }
+                return acc;
+            }, 0) || 0;
+        return item.max - usedQuantity;
+    }
 
-    @property({ type: Function })
-    getUsedItemQuantity: (itemName: string) => number = () => 0;
+    private getUsedQuantity(item: TradeItem) {
+        return (
+            this.completedItems.reduce((acc, ci) => {
+                if (ci.item.name === item.name) {
+                    return acc + ci.quantity;
+                }
+                return acc;
+            }, 0) || 0
+        );
+    }
+
+    private getSelectedQuantity(item: TradeItem) {
+        return (
+            this.selectedItems.find((si) => si.item.name === item.name)
+                ?.quantity || 0
+        );
+    }
 
     render() {
+        console.log(this.completedItems);
         return html`
             <sl-card class="w-full">
                 <div class="flex justify-between items-center mb-4">
@@ -56,12 +84,15 @@ export class TradeItemSelectorSection extends TailwindElement {
                                 </h3>
                                 ${place.items.map((item) => {
                                     const remainingMax =
-                                        this.getRemainingItemMax(item);
+                                        this.getRemainingMax(item);
                                     const usedQuantity =
-                                        this.getUsedItemQuantity(item.name);
+                                        this.getUsedQuantity(item);
+                                    const selectedQuantity =
+                                        this.getSelectedQuantity(item);
+
                                     return html`
                                         <div
-                                            class="flex items-center gap-2 mb-2 ${classMap(
+                                            class="flex items-center gap-2 mb-2 ${classNames(
                                                 {
                                                     "line-through opacity-30":
                                                         remainingMax === 0,
@@ -88,21 +119,19 @@ export class TradeItemSelectorSection extends TailwindElement {
                                                     type="number"
                                                     min="0"
                                                     max=${remainingMax}
-                                                    placeholder="0"
-                                                    value=${this.selectedItems.find(
-                                                        (si) =>
-                                                            si.item.name ===
-                                                            item.name
-                                                    )?.quantity || ""}
+                                                    value=${selectedQuantity}
                                                     ?disabled=${remainingMax ===
                                                     0}
-                                                    @sl-change=${(e: Event) => {
+                                                    @sl-change=${(
+                                                        e: SlChangeEvent
+                                                    ) => {
                                                         const input =
                                                             e.target as HTMLInputElement;
                                                         const quantity =
                                                             parseInt(
                                                                 input.value
                                                             ) || 0;
+
                                                         this.updateSelectedItems(
                                                             item,
                                                             quantity

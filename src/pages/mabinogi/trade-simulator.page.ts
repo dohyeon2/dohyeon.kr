@@ -1,17 +1,14 @@
 import { html } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { TailwindElement } from "utilities/TailwindElement";
-import "./sections/asset-selector.section";
-import "./sections/capacity-info.section";
-import "./sections/trade-item-selector.section";
-import "./sections/completed-trades.section";
-import "./sections/material-checklist.section";
 import tradeData from "constants/mabinogi/trade-simulator/trade.json";
 import vehicleData from "constants/mabinogi/trade-simulator/vehicle.json";
 import partnerData from "constants/mabinogi/trade-simulator/partner.json";
 import titleData from "constants/mabinogi/trade-simulator/title.json";
 import "./material-checker";
 import "../../components/ui/selector";
+import "./components";
+import "./sections";
 
 interface Asset {
     name: string;
@@ -65,9 +62,6 @@ export default class TradeSimulatorPage extends TailwindElement {
     @state()
     private completedTrades: TradeSession[] = [];
 
-    @state()
-    private remainingTime: string = "";
-
     private updateTimer: number | null = null;
 
     private get vehicleOptions() {
@@ -95,7 +89,6 @@ export default class TradeSimulatorPage extends TailwindElement {
         super.connectedCallback();
         this.loadAllData();
         this.loadCompletedTrades();
-        this.startTimer();
     }
 
     disconnectedCallback() {
@@ -256,39 +249,6 @@ export default class TradeSimulatorPage extends TailwindElement {
         };
     }
 
-    private startTimer() {
-        this.updateRemainingTime();
-        this.updateTimer = window.setInterval(() => {
-            this.updateRemainingTime();
-        }, 1000);
-    }
-
-    private updateRemainingTime() {
-        const now = new Date();
-        const targetDay = 4; // 목요일
-        const targetHour = 7;
-
-        let nextThursday = new Date(now);
-        nextThursday.setDate(
-            now.getDate() + ((targetDay + 7 - now.getDay()) % 7)
-        );
-        nextThursday.setHours(targetHour, 0, 0, 0);
-
-        if (now > nextThursday) {
-            nextThursday.setDate(nextThursday.getDate() + 7);
-        }
-
-        const diff = nextThursday.getTime() - now.getTime();
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-            (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        this.remainingTime = `${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
-    }
-
     private completeTrade() {
         const newTrade: TradeSession = {
             completedAt: Date.now(),
@@ -316,39 +276,13 @@ export default class TradeSimulatorPage extends TailwindElement {
         );
     }
 
-    private getUsedItemQuantity(itemName: string): number {
-        const now = Date.now();
-        const oneWeek = 7 * 24 * 60 * 60 * 1000;
-
-        return this.completedTrades
-            .filter((trade) => now - trade.completedAt < oneWeek)
-            .reduce((total, trade) => {
-                const item = trade.items.find((i) => i.item.name === itemName);
-                return total + (item?.quantity || 0);
-            }, 0);
-    }
-
-    private getRemainingItemMax(item: TradeItem): number {
-        const usedQuantity = this.getUsedItemQuantity(item.name);
-        return Math.max(0, item.max - usedQuantity);
-    }
-
     render() {
-        const { totalSlot, totalWeight } = this.calculateTotalCapacity();
-        const { usedSlot, usedWeight } = this.calculateCurrentUsage();
-        const { isOverSlot, isOverWeight } = this.isOverCapacity();
-
         return html`
             <div class="flex flex-col gap-4 mx-auto max-w-screen-lg p-5">
                 <div class="flex justify-between items-center">
                     <h1 class="text-2xl font-bold">교역 시뮬레이터</h1>
                     <div class="flex items-center gap-4">
-                        <div class="text-sm">
-                            <div class="font-medium">다음 초기화까지</div>
-                            <div class="text-blue-600">
-                                ${this.remainingTime}
-                            </div>
-                        </div>
+                        <reset-timer></reset-timer>
                         <button
                             class="px-3 py-1 text-sm text-red-600 border border-solid border-red-600 rounded hover:bg-red-50"
                             @click=${() => this.clearAllData()}
@@ -357,36 +291,35 @@ export default class TradeSimulatorPage extends TailwindElement {
                         </button>
                     </div>
                 </div>
-
                 <asset-selector-section
-                    .onVehicleChange=${(vehicle: Asset | null) => this.saveVehicle(vehicle)}
-                    .onPartnerChange=${(partner: Asset | null) => this.savePartner(partner)}
-                    .onTitleChange=${(title: Asset | null) => this.saveTitle(title)}
+                    .onVehicleChange=${(vehicle: Asset | null) => {
+                        this.saveVehicle(vehicle);
+                    }}
+                    .onPartnerChange=${(partner: Asset | null) => {
+                        this.savePartner(partner);
+                    }}
+                    .onTitleChange=${(title: Asset | null) => {
+                        this.saveTitle(title);
+                    }}
+                    .selectedVehicle=${this.selectedVehicle?.name}
+                    .selectedPartner=${this.selectedPartner?.name}
+                    .selectedTitle=${this.selectedTitle?.name}
                 ></asset-selector-section>
 
-                <capacity-info-section
-                    .usedSlot=${usedSlot}
-                    .totalSlot=${totalSlot}
-                    .usedWeight=${usedWeight}
-                    .totalWeight=${totalWeight}
-                ></capacity-info-section>
-
                 <trade-item-selector-section
+                    .completedItems=${this.completedTrades.flatMap((trade) =>
+                        trade.items.flatMap((item) => item)
+                    )}
                     .selectedItems=${this.selectedItems}
-                    .onItemsChange=${(items: Array<{ item: TradeItem; quantity: number }>) =>
-                        this.saveItems(items)}
-                    .onComplete=${() => this.completeTrade()}
-                    .getRemainingItemMax=${(item: TradeItem) => this.getRemainingItemMax(item)}
-                    .getUsedItemQuantity=${(itemName: string) => this.getUsedItemQuantity(itemName)}
+                    .onItemsChange=${(
+                        items: Array<{ item: TradeItem; quantity: number }>
+                    ) => {
+                        this.saveItems(items);
+                    }}
+                    .onComplete=${() => {
+                        this.completeTrade();
+                    }}
                 ></trade-item-selector-section>
-
-                <completed-trades-section
-                    .completedTrades=${this.completedTrades}
-                ></completed-trades-section>
-
-                <material-checklist-section
-                    .selectedItems=${this.selectedItems}
-                ></material-checklist-section>
             </div>
         `;
     }
