@@ -64,27 +64,6 @@ export default class TradeSimulatorPage extends TailwindElement {
 
     private updateTimer: number | null = null;
 
-    private get vehicleOptions() {
-        return vehicleData.map((vehicle) => ({
-            value: vehicle.name,
-            label: vehicle.name,
-        }));
-    }
-
-    private get partnerOptions() {
-        return partnerData.map((partner) => ({
-            value: partner.name,
-            label: partner.name,
-        }));
-    }
-
-    private get titleOptions() {
-        return titleData.map((title) => ({
-            value: title.name,
-            label: title.name,
-        }));
-    }
-
     connectedCallback() {
         super.connectedCallback();
         this.loadAllData();
@@ -239,16 +218,6 @@ export default class TradeSimulatorPage extends TailwindElement {
         return { usedSlot, usedWeight };
     }
 
-    private isOverCapacity() {
-        const { totalSlot, totalWeight } = this.calculateTotalCapacity();
-        const { usedSlot, usedWeight } = this.calculateCurrentUsage();
-
-        return {
-            isOverSlot: usedSlot > totalSlot,
-            isOverWeight: usedWeight > totalWeight,
-        };
-    }
-
     private completeTrade() {
         const newTrade: TradeSession = {
             completedAt: Date.now(),
@@ -263,17 +232,6 @@ export default class TradeSimulatorPage extends TailwindElement {
 
         // 선택된 아이템 초기화
         this.saveItems([]);
-    }
-
-    private getRemainingTradeCount(): number {
-        const now = Date.now();
-        const oneWeek = 7 * 24 * 60 * 60 * 1000;
-        return (
-            5 -
-            this.completedTrades.filter(
-                (trade) => now - trade.completedAt < oneWeek
-            ).length
-        );
     }
 
     render() {
