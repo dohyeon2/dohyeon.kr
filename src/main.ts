@@ -7,6 +7,9 @@ import "normalize.css";
 import "./pages";
 import "./components/layout/layout";
 import "./services";
+import { setBasePath } from "@shoelace-style/shoelace/dist/shoelace.js";
+
+setBasePath("/dist/shoelace");
 
 @customElement("app-root")
 export default class App extends LitElement {
