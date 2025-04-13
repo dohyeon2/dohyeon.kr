@@ -5,6 +5,7 @@ import tradeData from "constants/mabinogi/trade-simulator/trade.json";
 import vehicleData from "constants/mabinogi/trade-simulator/vehicle.json";
 import partnerData from "constants/mabinogi/trade-simulator/partner.json";
 import titleData from "constants/mabinogi/trade-simulator/title.json";
+import "./material-checker";
 
 interface Asset {
     name: string;
@@ -799,6 +800,16 @@ export default class TradeSimulatorPage extends TailwindElement {
                           </div>
                       `
                     : ""}
+                <div class="grid grid-cols-1 gap-4">
+                    ${this.selectedItems.flatMap((item) => {
+                        return item.item.materials.map((material) => {
+                            return html`<material-checker
+                                material="${material.name}"
+                                amount="${material.amount * item.quantity}"
+                            ></material-checker>`;
+                        });
+                    })}
+                </div>
             </div>
         `;
     }

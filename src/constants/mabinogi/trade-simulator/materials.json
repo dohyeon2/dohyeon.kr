@@ -2,20 +2,20 @@
     {
         "name": "매듭끈",
         "ingredients": [
-            { "name": "가는 실", "amount": 1 },
-            { "name": "굵은 실", "amount": 1 }
+            { "name": "가는 실뭉치", "amount": 1 },
+            { "name": "굵은 실뭉치", "amount": 1 }
         ]
     },
     {
         "name": "스태미나 500 포션",
         "ingredients": [
-            { "name": "스태미나 포션 300", "amount": 1 },
+            { "name": "스태미나 300 포션", "amount": 1 },
             { "name": "물이 든 병", "amount": 1 },
-            { "name": "네잎클로버", "amount": 1 }
+            { "name": "네잎 클로버", "amount": 1 }
         ]
     },
     {
-        "name": "스태미나 포션 300",
+        "name": "스태미나 300 포션",
         "ingredients": []
     },
     {
@@ -23,15 +23,15 @@
         "ingredients": []
     },
     {
-        "name": "네잎클로버",
+        "name": "네잎 클로버",
         "ingredients": []
     },
     {
-        "name": "가는 실",
+        "name": "가는 실뭉치",
         "ingredients": [{ "name": "거미줄", "amount": 5 }]
     },
     {
-        "name": "굵은 실",
+        "name": "굵은 실뭉치",
         "ingredients": [{ "name": "양털", "amount": 5 }]
     },
     {
@@ -41,7 +41,7 @@
     {
         "name": "쿠션용 솜",
         "ingredients": [
-            { "name": "가는 실", "amount": 5, "sourceAmount": 25 },
+            { "name": "가는 실뭉치", "amount": 5, "sourceAmount": 25 },
             { "name": "고급 양털", "amount": 20 }
         ]
     },
@@ -51,7 +51,9 @@
     },
     {
         "name": "최고급 실크",
-        "ingredients": [{ "name": "가는 실", "amount": 6, "sourceAmount": 30 }]
+        "ingredients": [
+            { "name": "가는 실뭉치", "amount": 6, "sourceAmount": 30 }
+        ]
     },
     {
         "name": "최고급 가죽끈",
@@ -63,7 +65,9 @@
     },
     {
         "name": "질긴 실",
-        "ingredients": [{ "name": "가는 실", "amount": 5, "sourceAmount": 25 }]
+        "ingredients": [
+            { "name": "가는 실뭉치", "amount": 5, "sourceAmount": 25 }
+        ]
     },
     {
         "name": "정령의 리큐르",
@@ -95,7 +99,9 @@
     },
     {
         "name": "고급 옷감",
-        "ingredients": [{ "name": "굵은 실", "amount": 5, "sourceAmount": 25 }]
+        "ingredients": [
+            { "name": "굵은 실뭉치", "amount": 5, "sourceAmount": 25 }
+        ]
     },
     {
         "name": "펫 놀이 세트",
@@ -173,7 +179,7 @@
     },
     {
         "name": "질긴 끈",
-        "ingredients": [{ "name": "굵은 실", "amount": 5 }]
+        "ingredients": [{ "name": "굵은 실뭉치", "amount": 5 }]
     },
     {
         "name": "마법의 양피지",
@@ -221,7 +227,7 @@
     },
     {
         "name": "고급 실크",
-        "ingredients": [{ "name": "가는 실", "amount": 5 }]
+        "ingredients": [{ "name": "가는 실뭉치", "amount": 5 }]
     },
     {
         "name": "스핀 기어",
@@ -260,8 +266,8 @@
         "ingredients": [
             { "name": "어둠이 깃든 칼날 조각", "amount": 1 },
             { "name": "매듭끈", "amount": 1 },
-            { "name": "가는 실", "amount": 1 },
-            { "name": "굵은 실", "amount": 1 }
+            { "name": "가는 실뭉치", "amount": 1 },
+            { "name": "굵은 실뭉치", "amount": 1 }
         ]
     },
     {
@@ -363,7 +369,7 @@
         "name": "생명력 500 포션",
         "ingredients": [
             { "name": "생명력 300 포션", "amount": 1 },
-            { "name": "네잎클로버", "amount": 1 },
+            { "name": "네잎 클로버", "amount": 1 },
             { "name": "물이 든 병", "amount": 1 }
         ]
     },
@@ -626,7 +632,7 @@
         "name": "마나 500 포션",
         "ingredients": [
             { "name": "마나 300 포션", "amount": 1 },
-            { "name": "네잎클로버", "amount": 1 },
+            { "name": "네잎 클로버", "amount": 1 },
             { "name": "물이 든 병", "amount": 1 }
         ]
     },
