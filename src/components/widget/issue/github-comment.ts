@@ -6,10 +6,10 @@ export default class GitHubComments extends LitElement {
     render() {
         return html` <giscus-widget
             id="comments"
-            data-repo="dohyeon2/dohyeon.kr"
-            data-repo-id="R_kgDOOYZK0A"
-            data-category="General"
-            data-category-id="DIC_kwDOOYZK0M4CpDzP"
+            repo="dohyeon2/dohyeon.kr"
+            repoId="R_kgDOOYZK0A"
+            category="General"
+            categoryId="DIC_kwDOOYZK0M4CpDzP"
             mapping="pathname"
             reactionsenabled="1"
             emitmetadata="1"
