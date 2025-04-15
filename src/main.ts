@@ -13,9 +13,13 @@ setBasePath("/shoelace");
 
 @customElement("app-root")
 export default class App extends LitElement {
+    constructor() {
+        super();
+    }
+
     private router = new Router(this, [
         { path: "/", render: () => html`<home-page></home-page>` },
-        { path: "/blog", render: () => html`<blog-page></blog-page>` },
+        { path: "/blog*", render: () => html`<blog-page></blog-page>` },
         {
             path: "/mabinogi/trade-simulator",
             render: () => html`<trade-simulator-page></trade-simulator-page>`,
