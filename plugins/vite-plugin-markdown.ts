@@ -26,7 +26,8 @@ export default function markdownPlugin(): Plugin {
             const output = `
         export const html = ${JSON.stringify(html)};
         export const raw = ${JSON.stringify(content)};
-        export const meta = ${JSON.stringify(metadata)};
+        export const metadata = ${JSON.stringify(metadata)};
+        export  { html, raw, metadata };
       `;
 
             return {

@@ -3,12 +3,15 @@ import { defineConfig } from "vite";
 import path from "path";
 import copy from "rollup-plugin-copy";
 import markdownPlugin from "./plugins/vite-plugin-markdown";
+import blogContentPlugin from "./plugins/vite-plugin-blog-content";
+
 export default defineConfig({
     appType: "spa",
     plugins: [
         tailwindcss(),
         // Copy Shoelace assets to dist/shoelace
         markdownPlugin(), // 마크다운 플러그인 추가
+        blogContentPlugin({ path: "/src/pages/blog/contents" }),
         copy({
             copyOnce: true,
             targets: [

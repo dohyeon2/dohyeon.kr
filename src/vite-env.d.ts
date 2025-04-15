@@ -8,3 +8,11 @@ declare module "*.md" {
     };
     export { html, raw, meta };
 }
+
+declare module "@blog/contents" {
+    const routes: {
+        path: string;
+        render: () => string;
+    }[];
+    export { routes };
+}
