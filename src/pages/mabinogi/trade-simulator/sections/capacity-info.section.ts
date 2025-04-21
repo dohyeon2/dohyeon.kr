@@ -37,7 +37,8 @@ export class CapacityInfoSection extends TailwindElement {
                             <p class="font-medium">슬롯:</p>
                             <sl-progress-bar
                                 class="flex-1"
-                                value=${(this.usedSlot * 100) / this.totalSlot}
+                                value=${(this.usedSlot * 100) /
+                                (this.totalSlot || 1)}
                                 data-over=${this.isOverSlot}
                                 size="small"
                             >
@@ -77,7 +78,7 @@ export class CapacityInfoSection extends TailwindElement {
                             <sl-progress-bar
                                 class="flex-1"
                                 value=${(this.usedWeight * 100) /
-                                this.totalWeight}
+                                (this.totalWeight || 1)}
                                 data-over=${this.isOverWeight}
                                 size="small"
                             >
