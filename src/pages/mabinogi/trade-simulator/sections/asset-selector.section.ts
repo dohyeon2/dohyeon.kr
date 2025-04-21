@@ -4,7 +4,7 @@ import { TailwindElement } from "utilities/TailwindElement";
 import vehicleData from "constants/mabinogi/trade-simulator/vehicle.json";
 import partnerData from "constants/mabinogi/trade-simulator/partner.json";
 import titleData from "constants/mabinogi/trade-simulator/title.json";
-import "../../../components/ui/selector";
+import "../../../../components/ui/selector";
 
 interface Asset {
     name: string;

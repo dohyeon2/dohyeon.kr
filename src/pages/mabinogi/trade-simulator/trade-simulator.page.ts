@@ -1,13 +1,9 @@
 import { html } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { TailwindElement } from "utilities/TailwindElement";
-import tradeData from "constants/mabinogi/trade-simulator/trade.json";
-import vehicleData from "constants/mabinogi/trade-simulator/vehicle.json";
-import partnerData from "constants/mabinogi/trade-simulator/partner.json";
-import titleData from "constants/mabinogi/trade-simulator/title.json";
-import "./material-checker";
-import "../../components/ui/selector";
+import "../../../components/ui/selector";
 import "./components";
+import "./material-checker";
 import "./sections";
 
 interface Asset {

@@ -20,9 +20,9 @@ export default class GlobalNavBar extends TailwindElement {
             </div>
             <div class="justify-end flex gap-2 flex-1 p-5">
                 <sl-button href="/blog">Blog</sl-button>
-                <!-- <sl-button href="/mabinogi/trade-simulator">
-                    Trade Simulator
-                </sl-button> -->
+                <sl-button href="/mabinogi/trade-simulator">
+                    마비노기 교역 시뮬레이터
+                </sl-button>
             </div>
         </div>`;
     }
