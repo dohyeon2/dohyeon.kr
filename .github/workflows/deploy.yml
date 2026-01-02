@@ -1,0 +1,52 @@
+name: Release & Deploy Astro
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: self-hosted
+
+    steps:
+      # 1️⃣ 코드 체크아웃
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # semantic-release 필수
+
+      # 2️⃣ Node 설정
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Enable corepack & pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@9 --activate
+
+      # 4️⃣ 의존성 설치
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # 6️⃣ semantic-release 실행
+      - name: Semantic Release
+        id: semrel
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pnpm semantic-release || echo "NO_RELEASE=true" >> $GITHUB_ENV
+
+      # 7️⃣ Astro 빌드
+      - name: Build Astro
+        run: pnpm build
+
+      # 8️⃣ 배포 (예시: rsync)
+      - name: Deploy Astro
+        run: |
+          rsync -avz --delete \
+            dist/ \
+            /var/www/astro-app/
