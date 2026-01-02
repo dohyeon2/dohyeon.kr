@@ -1,63 +1,47 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import Layout from '../layouts/BlogPost.astro';
+import { Image } from "astro:assets";
+import AboutHeroImage from "../assets/about/profile.png";
+import Layout from "../layouts/BlogPost.astro";
 ---
 
 <Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
+    title="안녕하세요. 개발자 주도현입니다."
+    description="안녕하세요. 개발자 주도현입니다."
+    pubDate={new Date("2026-01-03")}
 >
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
-
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
-
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
-
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
-
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
+    <Image
+        src={AboutHeroImage}
+        alt="About Hero Image"
+        class="w-full aspect-video object-contain object-top mb-4 bg-stone-200"
+    />
+    <h3>주도현</h3>
+    <ul class="mb-2 list-disc list-inside space-y-2">
+        <li>1994년 4월 17일 출생</li>
+        <li>안산공업고등학교 졸업</li>
+        <li>경희대학교 시각디자인과 졸업</li>
+        <li>방송통신대학교 컴퓨터과학과 재학</li>
+    </ul>
+    <br />
+    <p>
+        세상의 원리를 이해하고 싶은 개발자 주도현입니다. 경희대학교
+        시각디자인과를 졸업하여 미술학사를 취득하였으며, 개발자로서 커리어를
+        더욱 단단하게 쌓아가고자 방송통신대학교 컴퓨터과학과 재학중에 있습니다.
+    </p>
+    <p>
+        PHP로 개발을 입문하여 웹을 이해하기 위해 정진했습니다. 그 후 React의
+        발전에 따라 JS 개발자가 되었습니다. 러닝커브도 리소스라는 생각을 기반해
+        백엔드 또한 JS를 사용한 Nest.js를 출발지로 하면서, JS기반의 풀스택
+        개발자로 성장하였습니다. 현재는 JS라는 언어와 Next.js, Nest.js 와 같은
+        프레임워크를 넘어 웹 생태계 전반, 그 너머의 컴퓨터 공학 그리고 우리 사회
+        그 자체를 이해하는데 관심을 가지고 있습니다.
+    </p>
+    <p>
+        개발을 처음 시작할 때 부터, 코드나 언어 그 자체보다 생태계를 이해하는게
+        중요하다고 생각했습니다. 생활코딩을 통해 HTTP, DNS를 이해하고자 여러
+        영상을 봤던 기억이 납니다. 코드는 표현입니다. 말을 잘하는 것과 같은
+        기교입니다. 말에서 중요한 것이 화려한 기교보다 전달하고자 하는 것 그
+        자체이듯, 프로그램도 다르지 않다고 생각합니다. 때문에 설계를 그저
+        기술하는 오퍼레이터가 아니라, 프로그램의 목적에 맞는 설계를 하고자
+        공부하고있습니다.
+    </p>
 </Layout>
