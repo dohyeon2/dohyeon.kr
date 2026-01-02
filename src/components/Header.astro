@@ -5,7 +5,11 @@ import HeaderLink from "./HeaderLink.astro";
 
 <header>
     <nav>
-        <h2><a href="/">{SITE_TITLE}</a></h2>
+        <h2>
+            <a href="/">{SITE_TITLE}</a><small class="text-xs text-gray-500"
+                >v{import.meta.env.RELEASE_VERSION ?? "0.0.1"}</small
+            >
+        </h2>
         <div class="internal-links">
             <HeaderLink href="/">Home</HeaderLink>
             <HeaderLink href="/blog">Blog</HeaderLink>
