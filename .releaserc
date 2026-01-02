@@ -1,0 +1,16 @@
+{
+  "branches": ["main"],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "echo \"RELEASE_VERSION=${nextRelease.version}\" >> $GITHUB_ENV"
+      }
+    ],
+
+    "@semantic-release/github"
+  ]
+}
