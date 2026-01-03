@@ -5,12 +5,14 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 
+import react from '@astrojs/react';
+
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://dohyeon.kr',
-	integrations: [mdx(), sitemap()],
-	vite: {
-		// @ts-ignore
-		plugins: [tailwindcss()],
-	},
+    site: 'https://dohyeon.kr',
+    integrations: [mdx(), sitemap(), react()],
+    vite: {
+        // @ts-ignore
+        plugins: [tailwindcss()],
+    },
 });

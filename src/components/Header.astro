@@ -1,9 +1,10 @@
 ---
 import { SITE_TITLE } from "../consts";
 import HeaderLink from "./HeaderLink.astro";
+import { GoToUpButton } from "./react/GoToUpButton";
 ---
 
-<header class="sticky top-0 z-50">
+<header>
     <nav>
         <h2>
             <a href="/">{SITE_TITLE}</a><small class="text-xs text-gray-500"
@@ -33,6 +34,9 @@ import HeaderLink from "./HeaderLink.astro";
         </div>
     </nav>
 </header>
+<div class="fixed bottom-5 right-5">
+    <GoToUpButton client:only />
+</div>
 <style>
     header {
         margin: 0;
