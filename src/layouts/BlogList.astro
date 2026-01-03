@@ -1,0 +1,78 @@
+---
+import { Image } from "astro:assets";
+import BaseHead from "../components/BaseHead.astro";
+import type { CollectionEntry } from "astro:content";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import Header from "../components/Header.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import BlogCategories from "../components/BlogCategories.astro";
+
+type Props = {
+    posts: CollectionEntry<"blog">[];
+};
+
+const { posts } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <style>
+            main {
+                width: 960px;
+            }
+            h6 {
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <Header />
+        <main class="grid gap-5">
+            <section>
+                <h6>Categories</h6>
+                <div
+                    class="text-base **:[a]:text-gray-500! **:[a]:hover:text-gray-700!"
+                >
+                    <BlogCategories posts={posts} />
+                </div>
+            </section>
+            <section>
+                <h6>Posts</h6>
+                <ul class="grid">
+                    {
+                        posts.map((post) => (
+                            <li class="first:border-t border-b border-gray-300 py-5">
+                                {post.data.heroImage && (
+                                    <Image
+                                        width={720}
+                                        height={360}
+                                        src={post.data.heroImage}
+                                        alt=""
+                                    />
+                                )}
+                                <a
+                                    href={`/blog/c/${post.data.category}/`}
+                                    class="hover:text-gray-700 text-gray-500! text-sm block"
+                                >
+                                    {post.data.category}
+                                </a>
+                                <a href={`/blog/post/${post.id}/`}>
+                                    <h4 class="title">{post.data.title}</h4>
+                                    <p class="date text-sm mb-0! text-gray-700">
+                                        <FormattedDate
+                                            date={post.data.pubDate}
+                                        />
+                                    </p>
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </section>
+        </main>
+        <Footer />
+    </body>
+</html>

@@ -1,0 +1,28 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+type Props = {
+    posts: CollectionEntry<"blog">[];
+};
+
+const categories = (await getCollection("blog"))
+    .map((x) => x.data.category)
+    .reduce((acc, curr) => {
+        if (!curr) curr = "미분류";
+        acc.set(curr, (acc.get(curr) || 0) + 1);
+        return acc;
+    }, new Map<string, number>());
+---
+
+<ul>
+    {
+        Array.from(categories.entries()).map(([category, count]) => (
+            <li>
+                <a href={`/blog/c/${category}`}>
+                    {category} ({count})
+                </a>
+            </li>
+        ))
+    }
+</ul>
