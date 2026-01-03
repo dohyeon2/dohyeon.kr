@@ -12,9 +12,28 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<"blog">;
 
 const post = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+
+const maxDepth = Math.max(...headings.map((heading) => heading.depth));
 ---
 
 <BlogPost {...post.data}>
+    <ul class="text-base font-bold space-y-2 mb-5">
+        <li><strong class="text-lg font-bold text-gray-900">개요</strong></li>
+        {
+            headings.map((heading) => (
+                <li
+                    style={{
+                        paddingLeft: `${maxDepth - heading.depth}rem`,
+                    }}
+                >
+                    <a href={`#${heading.slug}`} class="text-gray-500!">
+                        {heading.text}
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+    <div class="h-4"></div>
     <Content />
 </BlogPost>
