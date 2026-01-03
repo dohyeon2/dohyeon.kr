@@ -39,8 +39,10 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
             .title {
                 margin-bottom: 1em;
                 padding: 1em 0;
-                text-align: center;
+                text-align: left;
                 line-height: 1;
+                word-break: keep-all;
+                text-wrap: balance;
             }
             .title h1 {
                 margin: 0 0 0.5em 0;
