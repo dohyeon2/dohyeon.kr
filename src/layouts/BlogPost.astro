@@ -16,7 +16,7 @@ const { title, description, pubDate, updatedDate, heroImage, category, tags } =
     <head>
         <BaseHead
             title={title}
-            description={description + " - " + tags?.join(", ")}
+            description={description + (tags?.length ? " - " + tags?.join(", ") : "")}
         />
         {tags && <meta name="keywords" content={tags.join(", ")} />}
         <style>
