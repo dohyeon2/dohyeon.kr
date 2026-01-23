@@ -8,13 +8,17 @@ import Header from "../components/Header.astro";
 
 type Props = CollectionEntry<"blog">["data"];
 
-const { title, description, pubDate, updatedDate, heroImage, category } =
+const { title, description, pubDate, updatedDate, heroImage, category, tags } =
     Astro.props;
 ---
 
 <html lang="en">
     <head>
-        <BaseHead title={title} description={description} />
+        <BaseHead
+            title={title}
+            description={description + " - " + tags?.join(", ")}
+        />
+        {tags && <meta name="keywords" content={tags.join(", ")} />}
         <style>
             main {
                 width: calc(100% - 2em);

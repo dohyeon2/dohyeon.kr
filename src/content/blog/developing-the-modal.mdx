@@ -1,0 +1,243 @@
+---
+title: "Promise 기반의 Headless Modal API 개발기"
+description: "UI 상태가 아닌 흐름으로 모달을 다루기: Promise 기반 Headless Modal API"
+tags: [React, Promise, Headless Modal, Flow Control, react-flow-modal, Modal API, OSS
+]
+pubDate: 2026-01-24
+category: "OSS"
+---
+
+## TL;DR
+**Promise 기반의 headless modal API**를 개발했습니다.  
+모달을 *상태*가 아닌 *흐름 제어 도구*로 다루기 위한 시도입니다.
+
+- https://www.npmjs.com/package/react-flow-modal  
+- https://github.com/dohyeon-kr/react-flow-modal
+
+---
+
+## 무엇을 만들었는가?
+
+Promise 기반의 **headless modal API**입니다.  
+함수 내부에서 모달을 호출하고, `resolve` / `reject`를 통해 결과를 반환받는 구조를 가집니다.
+
+```jsx
+function App() {
+    const modal = useModal();
+
+    const onClick = async () => {
+        const result = await modal.open(
+            "confirm",
+            (resolve, reject) => (
+                <ConfirmModal
+                    onConfirm={() => resolve(true)}
+                    onCancel={() => resolve(false)}
+                />
+            )
+        );
+
+        // resolve / reject 시 모달은 스택에서 자동으로 제거됩니다
+        console.log(result);
+    };
+
+    return <button onClick={onClick}>Open modal</button>;
+}
+```
+
+모달은 렌더링 대상이 아니라, **비동기 흐름의 중단점**으로 취급됩니다.
+
+---
+
+## 왜 만들었는가?
+
+기존 모달 구현의 **state 의존성**을 제거하고,  
+모달이 갖는 본질적인 역할을 코드 레벨에서 표현하고 싶었습니다.
+
+제가 생각하는 모달의 본질은 **플로우의 중단**입니다.
+
+- 흐름은 특정 지점에서 멈추고
+- 사용자의 선택을 기다린 뒤
+- 그 결과에 따라 다시 진행됩니다
+
+하지만 대부분의 Modal UI는 이 개념을 충분히 반영하지 못하고 있다고 느꼈습니다.  
+이유는 간단합니다. **state 기반으로 렌더링되기 때문**입니다.
+
+```jsx
+function App() {
+    const [isOpen, setIsOpen] = useState(false);
+    const [value, setValue] = useState("");
+
+    useEffect(() => {
+        console.log(value);
+    }, [value]);
+
+    return (
+        <div>
+            <button onClick={() => setIsOpen(true)}>Open modal</button>
+            {isOpen && (
+                <Portal>
+                    <Modal>
+                        <h1>Modal</h1>
+                        <input
+                            value={value}
+                            onChange={(e) => setValue(e.target.value)}
+                        />
+                        <button onClick={() => setIsOpen(false)}>Close</button>
+                    </Modal>
+                </Portal>
+            )}
+        </div>
+    );
+}
+```
+
+이 방식은 특히 **DX 측면에서 명확한 한계**를 드러냅니다.
+
+- 모달의 열림/닫힘을 위해 별도의 상태를 관리해야 합니다
+- 모달 내부 값을 외부에서 쓰려면 상태를 끌어올려야 합니다
+- 값 변경마다 렌더링이 발생합니다
+- 후속 로직을 위해 `useEffect`가 필요해집니다
+- 플로우가 취소되면 상태 초기화 책임도 개발자에게 있습니다
+
+UI의 의미와 구현 방식 사이의 괴리는  
+개발자에게 생각보다 큰 피로를 남깁니다.
+
+---
+
+## 어떻게 해결했는가?
+
+문제의 핵심은 **렌더링과 플로우가 강하게 결합되어 있다는 점**이라고 보았습니다.
+
+React의 `state`는 본래 **렌더링을 관리하기 위한 도구**입니다.  
+따라서 state 변경은 항상 *결과*를 의미해야 합니다.
+
+하지만 모달은 결과가 아니라 **결정을 기다리는 중간 단계**입니다.  
+그럼에도 state로 제어하는 것은 구조적으로 어색합니다.
+
+그래서 첫 번째 선택은 명확했습니다.
+
+> 모달을 “선언”하지 말고, **함수로 호출하자**
+
+```jsx
+function openModal(content) {
+    return createPortal(content, document.body);
+}
+```
+
+이제 모달은 컴포넌트 트리가 아니라 **명령형 API**가 됩니다.
+
+하지만 곧 또 하나의 문제가 드러났습니다.  
+**모달에서 발생한 값을 어떻게 호출 지점으로 돌려줄 것인가?**
+
+초기에는 다음과 같은 방식을 떠올렸습니다.
+
+```jsx
+function Component() {
+    const [value, setValue] = useState("");
+
+    return (
+        <button
+            onClick={() =>
+                openModal((close) => (
+                    <Modal>
+                        <input
+                            value={value}
+                            onChange={(e) => setValue(e.target.value)}
+                        />
+                        <button onClick={close}>Close</button>
+                    </Modal>
+                ))
+            }
+        >
+            Open modal
+        </button>
+    );
+}
+```
+
+가능한 방식이지만, 결국 같은 문제로 되돌아옵니다.
+
+- 값은 여전히 state에 저장됩니다
+- 외부 플로우에서 사용하려면 또 상태가 필요합니다
+- 모달 종료 시 상태 초기화 책임도 남아 있습니다
+
+이는 제가 정의한 **“플로우의 중단점으로서의 모달”**과 어긋났습니다.
+
+---
+
+## Promise로 모달을 바라보다
+
+이 지점에서 자연스럽게 떠오른 해법이 **Promise**였습니다.
+
+```jsx
+function openModal(render) {
+    return new Promise((resolve, reject) => {
+        render(resolve, reject);
+    });
+}
+```
+
+- `render` 함수는 모달을 렌더링합니다
+- `resolve`는 값을 반환하며 모달을 닫습니다
+- `reject`는 에러와 함께 모달을 닫습니다
+
+이 방식은 앞서의 문제를 깔끔하게 해결합니다.
+
+- 모달의 결과는 **state가 아닌 Promise 값**으로 반환됩니다
+- 값은 렌더링과 무관한 스코프 변수로 다뤄집니다
+- 불필요한 리렌더링이 사라집니다
+- `useEffect` 없이도 흐름을 자연스럽게 이어갈 수 있습니다
+
+이를 라이브러리 형태로 정리하면 다음과 같은 구조가 됩니다.
+
+```jsx
+import { ModalProvider, ModalHost, useModal } from "react-flow-modal";
+
+function App() {
+    const modal = useModal();
+
+    const onClick = async () => {
+        const result = await modal.open(
+            "confirm",
+            (resolve) => (
+                <ConfirmModal
+                    onConfirm={() => resolve(true)}
+                    onCancel={() => resolve(false)}
+                />
+            )
+        );
+
+        console.log(result);
+    };
+
+    return <button onClick={onClick}>Open modal</button>;
+}
+
+export default function Root() {
+    return (
+        <ModalProvider>
+            <App />
+            <ModalHost />
+        </ModalProvider>
+    );
+}
+```
+
+---
+
+## 마무리
+
+이렇게 구현한 모달은
+사용자 이벤트를 **state에 종속시키지 않고**, 호출 스코프에서 직접 다룰 수 있도록 합니다.
+
+또한 UI 구현을 강제하지 않는 **headless 방식**을 택했습니다.  
+제가 던진 질문은 “모달을 어떻게 예쁘게 만들 것인가”가 아니라,  
+“**모달이라는 UI를 어떤 API로 표현하는 것이 자연스러운가**”였기 때문입니다.
+
+앞으로 더 많은 실사용 사례와 테스트를 통해  
+안정성을 높이고, 사용성을 다듬어갈 계획입니다.
+
+이 글이 비슷한 고민을 하고 있는 분들께  
+작은 힌트나 영감이 되기를 바랍니다.
+
+읽어주셔서 감사합니다.
