@@ -16,7 +16,8 @@ const { title, description, pubDate, updatedDate, heroImage, category, tags } =
     <head>
         <BaseHead
             title={title}
-            description={description + (tags?.length ? " - " + tags?.join(", ") : "")}
+            description={description +
+                (tags?.length ? " - " + tags?.join(", ") : "")}
         />
         {tags && <meta name="keywords" content={tags.join(", ")} />}
         <style>
@@ -102,19 +103,21 @@ const { title, description, pubDate, updatedDate, heroImage, category, tags } =
             </article>
             <script
                 src="https://giscus.app/client.js"
-                data-repo="dohyeon2/dohyeon.kr"
+                data-repo="dohyeon-kr/dohyeon.kr"
                 data-repo-id="R_kgDOQyHCyA"
                 data-category="Comments"
                 data-category-id="DIC_kwDOQyHCyM4C0f78"
                 data-mapping="pathname"
                 data-strict="0"
                 data-reactions-enabled="1"
-                data-emit-metadata="1"
+                data-emit-metadata="0"
                 data-input-position="top"
-                data-theme="light"
+                data-theme="preferred_color_scheme"
                 data-lang="ko"
+                data-loading="lazy"
                 crossorigin="anonymous"
-                async></script>
+                async
+            ></script>
         </main>
         <Footer />
     </body>
