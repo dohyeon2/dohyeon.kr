@@ -23,6 +23,7 @@ const { title, description, pubDate, updatedDate, heroImage, category, tags } =
         <style>
             main {
                 width: 100%;
+                padding: 0 !important;
             }
             .hero-image {
                 width: 100%;
@@ -37,7 +38,6 @@ const { title, description, pubDate, updatedDate, heroImage, category, tags } =
                 width: 100%;
                 max-width: 1080px;
                 margin: auto;
-                padding: 0 1em;
                 color: rgb(var(--gray-dark));
             }
             .title {
@@ -56,6 +56,14 @@ const { title, description, pubDate, updatedDate, heroImage, category, tags } =
             }
             .last-updated-on {
                 font-style: italic;
+            }
+            @media (max-width: 720px) {
+                :root{
+                    font-size: 90%;
+                }
+                .title h1{
+                    font-size: 2.5rem;
+                }
             }
         </style>
     </head>

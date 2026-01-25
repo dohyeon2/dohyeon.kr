@@ -131,10 +131,22 @@ hr {
 }
 @media (max-width: 720px) {
     body {
-        font-size: 18px;
+        font-size: 14px;
     }
     main {
         padding: 1em;
+    }
+    h2 {
+        font-size: 2rem;
+    }
+    h3 {
+        font-size: 1.75rem;
+    }
+    h4 {
+        font-size: 1.5rem;
+    }
+    h5 {
+        font-size: 1.25rem;
     }
 }
 
